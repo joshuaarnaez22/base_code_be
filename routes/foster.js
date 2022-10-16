@@ -1,4 +1,4 @@
-const User = require('../models/user'); // Import User Model Schema
+const Foster = require('../models/foster'); // Import User Model Schema
 const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
@@ -6,28 +6,28 @@ let bcrypt = require('bcryptjs');
 
 module.exports = (router) => {
 
-    router.get('/getAllUser', (req, res) => {
+    router.get('/getAllFoster', (req, res) => {
 
         // Search database for all blog posts
-        User.find({ deleted: false }, { _id: 1, email: 1, username: 1, role: 1, status: 1 }, (err, user) => {
+        Foster.find({ deleted: false }, { _id: 1, email: 1, username: 1, role: 1, status: 1 }, (err, user) => {
             // Check if error was found or not
             if (err) {
                 res.json({ success: false, message: err }); // Return error message
             } else {
-                // Check if blogs were found in database
+                // Check if Foster were found in database
                 if (!user) {
-                    res.json({ success: false, message: 'No User found.' }); // Return error of no blogs found
+                    res.json({ success: false, message: 'No Foster found.' }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success: true, user: user }); // Return success and blogs array
+                    res.json({ success: true, user: user }); // Return success and Foster array
                 }
             }
-        }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
+        }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
     });
 
 
 
 
-    router.post('/addUser', (req, res) => {
+    router.post('/addFoster', (req, res) => {
 
 
 
@@ -47,19 +47,22 @@ module.exports = (router) => {
 
                 } else {
 
-                    let user = new User({
+                    let foster = new Foster({
                         id: uuidv4(),
                         email: req.body.email.toLowerCase(),
                         username: req.body.username.toLowerCase(),
                         password: req.body.password,
                         role: req.body.role.toLowerCase(),
+                        firstname : req.body.firstname?.toLowerCase() || '',
+                        lastname : req.body.lastname?.toLowerCase() || '',
+                        address : req.body.address?.toLowerCase() || '',
                     })
 
-                    user.save((err, data) => {
+                    foster.save((err, data) => {
                         if (err) {
                             if (err.code === 11000) {
 
-                                res.json({ success: false, message: 'User name or Email already exists ', err: err.message })
+                                res.json({ success: false, message: 'Username or Email already exists ', err: err.message })
                             } else {
 
                                 if (err.errors) {
@@ -79,11 +82,11 @@ module.exports = (router) => {
                                     }
 
                                 } else {
-                                    res.json({ success: false, message: 'Could not save user Error : ' + err })
+                                    res.json({ success: false, message: 'Could not save Foster Error : ' + err })
                                 }
                             }
                         } else {
-                            res.json({ success: true, message: 'Account Registered successfully', data: { email: data.email, username: data.username } });
+                            res.json({ success: true, message: 'Foster Account Registered successfully', data: { email: data.email, username: data.username } });
                             // globalconnetion.emitter('user')
                         }
                     })
@@ -95,17 +98,19 @@ module.exports = (router) => {
     });
 
 
-    router.put('/deleteUser', (req, res) => {
+    router.put('/deleteFoster', (req, res) => {
 
         let data = req.body;
 
-        User.deleteOne({
+        console.log(data);
+
+        Foster.deleteOne({
             id: data.id
         }, (err, user) => {
                 if (err) {
-                    res.json({ success: false, message: 'Could not Delete User' + err })
+                    res.json({ success: false, message: 'Could not Delete Foster' + err })
                 } else {
-                    res.json({ success: true, message:' Successfully Deleted the User', data: user });
+                    res.json({ success: true, message: ' Successfully Deleted the Foster', data: user });
                     // globalconnetion.emitter('user')
                 }
             })
@@ -116,12 +121,12 @@ module.exports = (router) => {
 
 
 
-    router.put('/updateUser', (req, res) =>   {
+    router.put('/updateFoster', (req, res) =>   {
 
         let data = req.body;
-        let userData = {};
+        let fosterData = {};
 
-     User.findOne({id: data.id }, async (err,docs) => {
+        Foster.findOne({id: data.id }, async (err,docs) => {
          //check old password against the database
        
             if (err){
@@ -138,20 +143,20 @@ module.exports = (router) => {
                     }else{
                         
                         hash.encryptPassword(data.new_password).then(hash => {
-                            userData.role = data.role;
-                            userData.username = data.username;
-                            userData.email = data.email;
-                            userData.password = hash;
-                            userData.firstname = data.firstname  || '';
-                            userData.lastname = data.lastname  || '';
-                            userData.address = data.address || '';
+                            fosterData.role = data.role;
+                            fosterData.firstname = data.firstname  || '';
+                            fosterData.lastname = data.lastname  || '';
+                            fosterData.address = data.address || '';
+                            fosterData.username = data.username;
+                            fosterData.email = data.email;
+                            fosterData.password = hash;
                             changedPassword = true;
-                            User.findOneAndUpdate({ id: data.id }, userData, { upsert: true }, (err, response) => {
+                            Foster.findOneAndUpdate({ id: data.id }, fosterData, { upsert: true }, (err, response) => {
                                 if (err) return res.json({ success: false, message: err.message });
                                 if (response) {
-                                    res.json({ success: true, message: "User Information has been updated!", data: response });
+                                    res.json({ success: true, message: "Foster Information has been updated!", data: response });
                                 } else {
-                                    res.json({ success: true, message: "No User has been modified!", data: response });
+                                    res.json({ success: true, message: "No Foster has been modified!", data: response });
                                 }
                             });
                         }).catch(err => { console.log(err); })
@@ -159,19 +164,19 @@ module.exports = (router) => {
                     }
                 }else{
 
-                    userData.role = data.role;
-                    userData.username = data.username;
-                    userData.firstname = data.firstname  || '';
-                    userData.lastname = data.lastname  || '';
-                    userData.address = data.address || '';
-                    userData.email = data.email;
-                    userData.status = data.status;
-                    User.findOneAndUpdate({ id: data.id }, userData, { upsert: true }, (err, response) => {
+                    fosterData.role = data.role;
+                    fosterData.username = data.username;
+                    fosterData.email = data.email;
+                    fosterData.firstname = data.firstname  || '';
+                    fosterData.lastname = data.lastname  || '';
+                    fosterData.address = data.address || '';
+                    fosterData.status = data.status;
+                    Foster.findOneAndUpdate({ id: data.id }, fosterData, { upsert: true }, (err, response) => {
                         if (err) return res.json({ success: false, message: err.message });
                         if (response) {
-                             res.json({ success: true, message: "User Information has been updated!", data: response  });
+                             res.json({ success: true, message: "Foster Information has been updated!", data: response  });
                         } else {
-                            res.json({ success: true, message: "No User has been modified!", data: response });
+                            res.json({ success: true, message: "No Foster has been modified!", data: response });
                         }
                     });
                     
@@ -180,7 +185,6 @@ module.exports = (router) => {
         })
 
     });
-
 
     return router;
 };
