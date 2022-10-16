@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
-let bcrypt = require('bcryptjs');
 const email = require('../models/validators/user-validators');
 const username = require('../models/validators/user-validators');
 const password = require('../models/validators/user-validators');
 const { Schema } = mongoose;
+let bcrypt = require('bcryptjs');
 
 
-const userSchema = new Schema({
+const volunteerSchema = new Schema({
     id :  { type: String, required: true,  },
-    firstname :  { type: String,  },
-    lastname :  { type: String,  },
-    address :  { type: String,  },
-    email: { type: String, required: true,lowercase: true, validate: email.emailValidator },
-    username: { type: String, required: true, lowercase: true, validate: username.usernameValidators },
+    firstname :  { type: String, default: '' },
+    lastname :  { type: String,   default: '' },
+    address :  { type: String,  default: '' },
+    email: { type: String, required: true,  lowercase: true, validate: email.emailValidator },
+    username: { type: String, required: true,  lowercase: true, validate: username.usernameValidators },
     role: { type: String, required: true },
     status: { type: String, default: 'active' },
     deleted: { type: Boolean, default: false },
@@ -20,8 +20,7 @@ const userSchema = new Schema({
   
   });
 
-
-  userSchema.pre('save', function (next) {
+  volunteerSchema.pre('save', function (next) {
     if (!this.isModified('password')) {
       return next()
     } else {
@@ -34,11 +33,6 @@ const userSchema = new Schema({
       });
     }
   })
-  
-  // (password) => ****does not work with es6 syntax**** use functions old ways
-  userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password); // this return a promise
-  }
 
   
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Volunteer', volunteerSchema);
