@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 3000;
 const path = require('path');
 const http = require('http').Server(app);
 
-
 //path routes
 const users = require('./routes/users')(router);
 
@@ -24,7 +23,6 @@ mongoose.connect(config.uri, config.options, (err) => {
     }
 });
 
-
 app.use(cors())
 
 //body-parser built in express middleware
@@ -36,10 +34,8 @@ app.use(express.static(__dirname + '/app/dist/'));
 app.use('/images', express.static(path.join(__dirname, './images')));
 app.use('/upload', express.static(path.join(__dirname, './upload')));
 
-
 //api routes
 app.use('/users', users);
-
 
 app.get('*', (req, res) => {
      res.send('<h1>Hello from the Server Side</h1>')
