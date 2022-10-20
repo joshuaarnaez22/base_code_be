@@ -29,8 +29,6 @@ module.exports = (router) => {
 
     router.post('/addFoster', (req, res) => {
 
-
-
         if (!req.body.email) {
             res.json({ success: false, message: 'You must provide an email' })
         } else {
