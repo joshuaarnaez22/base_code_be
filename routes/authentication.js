@@ -131,14 +131,6 @@ module.exports = (router) => {
                 res.json({ success: false, message: 'Password is incorrect' })
               } else {
                 const token = jwt.sign({ userID: user._id }, config.secret, { expiresIn: '24h' });
-
-                  // localStorage.setItem('token', token); // Set token in local storage
-                  // localStorage.setItem('tokenUsername', user.username); // Set token in local storage
-                  // localStorage.setItem('user', JSON.stringify(user)); // Set user in local storage as string
-                  // localStorage.setItem('fulluserloggedData', JSON.stringify(data)); // Set user in local storage as string
-                  // this.authToken = token; // Assign token to be used elsewhere
-                  // this.user = user; // Set user to be used elsewhere
-
                 res.json({ success: true, message: 'Password is Correct', token: token, user: { username: user.username }, userToken: user.username, role: user.role },)
 
               }
@@ -155,8 +147,6 @@ module.exports = (router) => {
 
   // any route that needs authorization or token should be under it if not above this middleware 
   router.use((req, res, next) => {
-
-
     //'@auth0/angular-jwt' automatically adds token in the headers but it also add the world 'Bearer ' so i manually format it 
     //i slice the word 'Bearer '  = 7
     //let token = (req.headers['authorization']).slice(7);
