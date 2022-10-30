@@ -7,8 +7,8 @@ const hash = crypto.createHmac(process.env.ENCRYPTION_ALGO, process.env.ENCRYPTI
 
 module.exports = {
 
-    uri: process.env.DB_LOCAL,
-    //uri: process.env.DB_URL,
+    //uri: process.env.DB_LOCAL,
+    uri: process.env.DB_URL,
     secret: hash,
     options: {
         useUnifiedTopology: true,
