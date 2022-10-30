@@ -14,6 +14,6 @@ module.exports = {
         useUnifiedTopology: true,
         useNewUrlParser: true,
         //serverApi: ServerApiVersion.v1
-    }, 
+    },  
 
 }
