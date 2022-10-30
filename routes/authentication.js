@@ -159,36 +159,37 @@ module.exports = (router) => {
   });
 
   // any route that needs authorization or token should be under it if not above this middleware
-  // router.use((req, res, next) => {
-  //   //'@auth0/angular-jwt' automatically adds token in the headers but it also add the world 'Bearer ' so i manually format it
-  //   //i slice the word 'Bearer '  = 7
-  //   //let token = (req.headers['authorization']).slice(7);
-  //   var token = ''
-  //   if (req.headers['authorization']) {
-  //     token = (req.headers['authorization']).substring(req.headers['authorization'].indexOf(" ") + 1)
-  //   }
+  router.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    //'@auth0/angular-jwt' automatically adds token in the headers but it also add the world 'Bearer ' so i manually format it
+    //i slice the word 'Bearer '  = 7
+    //let token = (req.headers['authorization']).slice(7);
+    // var token = ''
+    // if (req.headers['authorization']) {
+    //   token = (req.headers['authorization']).substring(req.headers['authorization'].indexOf(" ") + 1)
+    // }
 
-  //   if (!token) {
-  //     res.json({ success: false, message: 'No token provided' })
+    // if (!token) {
+    //   res.json({ success: false, message: 'No token provided' })
 
-  //   } else {
-  //     //decrypt token
-  //     jwt.verify(token, config.secret, (err, decoded) => {
+    // } else {
+    //   //decrypt token
+    //   jwt.verify(token, config.secret, (err, decoded) => {
 
-  //       if (err) {
-  //         //expire or invalid
-  //         res.json({ success: false, message: 'Token invalid :' + err })
+    //     if (err) {
+    //       //expire or invalid
+    //       res.json({ success: false, message: 'Token invalid :' + err })
 
-  //       } else {
-  //         //assign token to headers
-  //         req.decoded = decoded
-  //         //to break to this functions if not it will just loop
-  //         next();
-  //       }
+    //     } else {
+    //       //assign token to headers
+    //       req.decoded = decoded
+    //       //to break to this functions if not it will just loop
+    //       next();
+    //     }
 
-  //     })
-  //   }
-  // })
+    //   })
+    // }
+  });
 
   router.get("/profile", (req, res) => {
     User.findOne({ _id: req.decoded.userID })
