@@ -12,7 +12,8 @@ const publicPath = path.join(__dirname, '..', 'public');
 //path routes
 // const users = require('./routes/users')(router);
 const authentication = require('./routes/authentication')(router);
- const users = require('./routes/users')(router);
+const users = require('./routes/users')(router);
+const orphan = require('./routes/orphans')(router);
 const volunteer = require('./routes/volunteer')(router);
 const socialworker = require('./routes/socialworker')(router);
 const foster = require('./routes/foster')(router);
@@ -44,6 +45,7 @@ app.use('/upload', express.static(path.join(__dirname, './upload')));
 // app.use('/users', users);
 app.use('/authentication', authentication);
 app.use('/users', users);
+app.use('/orphans', orphan);
 app.use('/volunteers', volunteer);
 app.use('/socialworker', socialworker);
 app.use('/fosters', foster);
