@@ -27,7 +27,7 @@ module.exports = (router) => {
     router.get('/getTotalFoster', (req, res) => {
 
         // Search database for all blog posts
-        Foster.countDocuments({ }, (err, user) => {
+        Foster.countDocuments({ deleted: false}, (err, user) => {
             // Check if error was found or not
             if (err) {
                 res.json({ success: false, message: err }); // Return error message
