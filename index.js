@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
 const path = require('path');
 const http = require('http').Server(app);
-
+const publicPath = path.join(__dirname, '..', 'public');
 //path routes
 // const users = require('./routes/users')(router);
 const authentication = require('./routes/authentication')(router);
@@ -49,11 +49,14 @@ app.use('/socialworker', socialworker);
 app.use('/fosters', foster);
 app.use('/visitation', visitation);
 
-app.get('*', (req, res) => {
-     //res.send('<h1>Hello from the Server Side</h1>')
-res.sendFile(path.join(__dirname + '/app/next/server/pages/index.html'),)
-});
+// app.get('*', (req, res) => {
+//      //res.send('<h1>Hello from the Server Side</h1>')
+// res.sendFile(path.join(__dirname + '/app/next/server/pages/index.html'),)
 
+// });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+ });
 
 const servers = app.listen(PORT, () => {
     console.log('Connected on port ' + PORT);

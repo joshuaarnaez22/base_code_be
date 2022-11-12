@@ -1,4 +1,4 @@
-const LOCALDEV = 'http://localhost:3000';
+const LOCALDEV = 'holy-infant.herokuapp.com';
 export const addUser = `${LOCALDEV}/users/addUser`;
 export const getAllUser = `${LOCALDEV}/users/getAllUser`;
 export const updateUser = `${LOCALDEV}/users/updateUser`;
