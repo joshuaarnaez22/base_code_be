@@ -5,3 +5,4 @@ module.exports.checkPassword =  function (password, hash) {
      bcrypt.compare(password, hash);
 }
    
+    
