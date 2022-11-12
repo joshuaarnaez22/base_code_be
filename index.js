@@ -22,6 +22,7 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect(config.uri, config.options, (err) => {
   if (err) {
+    console.log(err);
     console.log("cant connect to database " + process.env.DB_NAME);
   } else {
     console.log("connected to the database " + process.env.DB_NAME);
