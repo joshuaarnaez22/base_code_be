@@ -5,7 +5,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 //const hash = crypto.createHmac(process.env.ENCRYPTION_ALGO, process.env.ENCRYPTION_KEY).update('thesis').digest(process.env.ENCRYPTION_ENCODING);
 
-const hash = crypto.createHmac('sha256', secret)
+const hash = crypto.createHmac('sha256', process.env.ENCRYPTION_KEY)
                     
                    // updating data
                    .update('holy')
