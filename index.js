@@ -11,12 +11,22 @@ const http = require("http").Server(app);
 const publicPath = path.join(__dirname, "..", "public");
 //path routes
 // const users = require('./routes/users')(router);
+<<<<<<< HEAD
 const authentication = require("./routes/authentication")(router);
 const users = require("./routes/users")(router);
 const volunteer = require("./routes/volunteer")(router);
 const socialworker = require("./routes/socialworker")(router);
 const foster = require("./routes/foster")(router);
 const visitation = require("./routes/visitation")(router);
+=======
+const authentication = require('./routes/authentication')(router);
+const users = require('./routes/users')(router);
+const orphan = require('./routes/orphans')(router);
+const volunteer = require('./routes/volunteer')(router);
+const socialworker = require('./routes/socialworker')(router);
+const foster = require('./routes/foster')(router);
+const visitation = require('./routes/visitation')(router);
+>>>>>>> b09f78542063351fec945a60f3267a0f288a56b6
 
 mongoose.Promise = global.Promise;
 
@@ -41,12 +51,13 @@ app.use("/upload", express.static(path.join(__dirname, "./upload")));
 
 //api routes
 // app.use('/users', users);
-app.use("/authentication", authentication);
-app.use("/users", users);
-app.use("/volunteers", volunteer);
-app.use("/socialworker", socialworker);
-app.use("/fosters", foster);
-app.use("/visitation", visitation);
+app.use('/authentication', authentication);
+app.use('/users', users);
+app.use('/orphans', orphan);
+app.use('/volunteers', volunteer);
+app.use('/socialworker', socialworker);
+app.use('/fosters', foster);
+app.use('/visitation', visitation);
 
 app.get("*", (req, res) => {
   res.send("<h1>Hello from the Server Side</h1>");

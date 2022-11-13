@@ -24,7 +24,31 @@ module.exports = (router) => {
         }).sort({ '_id': -1 }); // Sort SocialWorker from newest to oldest
     });
 
+    router.get('/getTotalSocialWorker', (req, res) => {
 
+        // Search database for all blog posts
+        SocialWorker.countDocuments({ deleted: false }, (err, worker) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if SocialWorker were found in database
+                if (!worker) {
+                    res.json({ success: false, message: 'No SocialWorker found.' }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success: true, SocialWorker: worker }); // Return success and SocialWorker array
+                }
+            }
+        }); // Sort SocialWorker from newest to oldest
+    });
+
+
+    /*
+    Adventure.countDocuments({ type: 'jungle' }, function (err, count) {
+  console.log('there are %d jungle adventures', count);
+});
+    
+    */
 
 
     router.post('/addSocialWorker', (req, res) => {
