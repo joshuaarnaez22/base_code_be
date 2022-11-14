@@ -25,11 +25,28 @@ module.exports = (router) => {
     });
 
 
+    router.get('/getTotalVolunteer', (req, res) => {
+
+        // Search database for all blog posts
+        Volunteer.countDocuments({ deleted: false }, (err, volunteer) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if SocialWorker were found in database
+                if (!volunteer) {
+                    res.json({ success : true, name: 'getTotalVolunteer' , total: volunteer  }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalVolunteer' , total: volunteer  }); // Return success and SocialWorker array
+                }
+            }
+        }); // Sort SocialWorker from newest to oldest
+    });
+
+
 
 
     router.post('/addVolunteer', (req, res) => {
-
-
 
         if (!req.body.email) {
             res.json({ success: false, message: 'You must provide an email' })

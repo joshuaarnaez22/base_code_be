@@ -25,6 +25,78 @@ module.exports = (router) => {
     });
 
 
+    router.get('/getTotalVisitation', (req, res) => {
+
+        // Search database for all blog posts
+        Visitation.countDocuments({deleted: false}, (err, visit) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if Visitation were found in database
+                if (!visit) {
+                    res.json({ success : true, name: 'getTotalVisitation' , total: visit }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalVisitation' , total: visit }); // Return success and Visitation array
+                }
+            }
+        }); // Sort Visitation from newest to oldest
+    });
+
+
+    router.get('/getTotalApprovedVisitation', (req, res) => {
+
+        // Search database for all blog posts
+        Visitation.countDocuments({ status: 'approved' }, (err, visitation) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if SocialWorker were found in database
+                if (!visitation) {
+                    res.json({ success : true, name: 'getTotalApprovedVisitation' , total: visitation }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalApprovedVisitation' , total: visitation}); // Return success and SocialWorker array
+                }
+            }
+        }); // Sort SocialWorker from newest to oldest
+    });
+
+    router.get('/getTotalPendingVisitation', (req, res) => {
+
+        // Search database for all blog posts
+        Visitation.countDocuments({ status: 'pending' }, (err, visitation) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if SocialWorker were found in database
+                if (!visitation) {
+                    res.json({ success : true, name: 'getTotalPendingVisitation' , total: visitation }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalPendingVisitation' , total: visitation }); // Return success and SocialWorker array
+                }
+            }
+        }); // Sort SocialWorker from newest to oldest
+    });
+
+    router.get('/getTotalCancelledVisitation', (req, res) => {
+
+        // Search database for all blog posts
+        Visitation.countDocuments({ deleted: true }, (err, visitation) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if SocialWorker were found in database
+                if (!visitation) {
+                    res.json({ success : true, name: 'getTotalCancelledVisitation' , total: visitation }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalCancelledVisitation' , total: visitation }); // Return success and SocialWorker array
+                }
+            }
+        }); // Sort SocialWorker from newest to oldest
+    });
 
 
     router.post('/addVisitation', (req, res) => {

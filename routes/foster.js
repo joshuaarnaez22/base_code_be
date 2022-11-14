@@ -24,6 +24,24 @@ module.exports = (router) => {
         }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
     });
 
+    router.get('/getTotalFoster', (req, res) => {
+
+        // Search database for all blog posts
+        Foster.countDocuments({ deleted: false}, (err, user) => {
+            // Check if error was found or not
+            if (err) {
+                res.json({ success: false, message: err }); // Return error message
+            } else {
+                // Check if Foster were found in database
+                if (!user) {
+                    res.json({ success : true, name: 'getTotalFoster' , total: user  }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'getTotalFoster' , total: user  }); // Return success and Foster array
+                }
+            }
+        }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
+    });
+
 
 
 
