@@ -57,7 +57,8 @@ app.use('/visitation', visitation);
 
 // });
 app.get('*', (req, res) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
+    // res.sendFile(path.join(publicPath, 'index.html'));
+    res.sendFile(path.join(__dirname + '/app/dist/index.html'),)
  });
 
 const servers = app.listen(PORT, () => {

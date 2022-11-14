@@ -35,9 +35,9 @@ module.exports = (router) => {
             } else {
                 // Check if Visitation were found in database
                 if (!visit) {
-                    res.json({ success : true, name: getTotalVisitation , total: visit }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'getTotalVisitation' , total: visit }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: getTotalVisitation , total: visit }); // Return success and Visitation array
+                    res.json({ success : true, name: 'getTotalVisitation' , total: visit }); // Return success and Visitation array
                 }
             }
         }); // Sort Visitation from newest to oldest
@@ -54,9 +54,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!visitation) {
-                    res.json({ success : true, name: getTotalApprovedVisitation , total: visitation }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'getTotalApprovedVisitation' , total: visitation }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: getTotalApprovedVisitation , total: visitation}); // Return success and SocialWorker array
+                    res.json({ success : true, name: 'getTotalApprovedVisitation' , total: visitation}); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
@@ -72,9 +72,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!visitation) {
-                    res.json({ success : true, name: getTotalPendingVisitation , total: visitation }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'getTotalPendingVisitation' , total: visitation }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: getTotalPendingVisitation , total: visitation }); // Return success and SocialWorker array
+                    res.json({ success : true, name: 'getTotalPendingVisitation' , total: visitation }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
@@ -90,9 +90,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!visitation) {
-                    res.json({ success : true, name: getTotalCancelledVisitation , total: visitation }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'getTotalCancelledVisitation' , total: visitation }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: getTotalCancelledVisitation , total: visitation }); // Return success and SocialWorker array
+                    res.json({ success : true, name: 'getTotalCancelledVisitation' , total: visitation }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
