@@ -52,6 +52,7 @@ app.use("/visitation", visitation);
 
 app.get("*", (req, res) => {
   res.send("<h1>Hello from the Server Side</h1>");
+
   // res.sendFile(path.join(__dirname + '/app/next/server/pages/index.html'),)
 });
 // app.get('*', (req, res) => {
