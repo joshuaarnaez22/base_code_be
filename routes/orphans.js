@@ -36,9 +36,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!orphan) {
-                    res.json({ success : true, name: 'getTotalOrphan' , total: orphan }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'Orphans' , total: orphan }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: 'getTotalOrphan' , total: orphan }); // Return success and SocialWorker array
+                    res.json({ success : true, name: 'Orphans' , total: orphan }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
