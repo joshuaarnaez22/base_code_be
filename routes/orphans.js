@@ -36,9 +36,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!orphan) {
-                    res.json({ success: false, message: 'No Visitation found.' }); // Return error of no Volunteer found
+                    res.json({ success : true, name: getTotalOrphan , total: orphan }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success: true, getTotalOrphan: orphan }); // Return success and SocialWorker array
+                    res.json({ success : true, name: getTotalOrphan , total: orphan }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
@@ -66,38 +66,31 @@ module.exports = (router) => {
                 dob: req.body.dob,
                 place_of_birth: req.body.place_of_birth,
                 birth_status: req.body.birth_status,
-                birth_status: req.body.birth_status,
                 present_whereabouts: req.body.present_whereabouts,
                 date_admission: req.body.date_admission,
                 date_surrendered: req.body.date_surrendered,
                 category: req.body.category,
                 moral: req.body.moral,
-                mointoring: req.body.mointoring,
+                place_where_found :  req.body.place_where_found,
+                date_surrendered : req.body.date_surrendered,
+                souce_information :  req.body.souce_information,
+                circumstances :  req.body.circumstances,
+                background_info :  req.body.background_info,
+                desc_child_admission : req.body.desc_child_admission,
+                dev_history :  req.body.dev_history,
+                desc_present_envi :  req.body.desc_present_envi,
+                termination_rights_abandonement : req.body.termination_rights_abandonement,
+                assesement_recomendation :  req.body.assesement_recomendation,
+                // mointoring: req.body.mointoring,
             })
 
             orphan.save((err, data) => {
                 if (err) {
                     if (err.code === 11000) {
-
                         res.json({ success: false, message: 'Orphan Error', err: err.message })
                     } else {
-
                         if (err.errors) {
-                            //for specific error email,orphanname and password
-                            if (err.errors.email) {
-                                res.json({ success: false, message: err.errors.email.message })
-                            } else {
-                                if (err.errors.orphanname) {
-                                    res.json({ success: false, message: err.errors.orphanname.message })
-                                } else {
-                                    if (err.errors.password) {
-                                        res.json({ success: false, message: err.errors.password.message })
-                                    } else {
-                                        res.json({ success: false, message: err })
-                                    }
-                                }
-                            }
-
+                            res.json({ success: false, message: err.errors.message })
                         } else {
                             res.json({ success: false, message: 'Could not save orphan Error : ' + err })
                         }
@@ -155,13 +148,22 @@ module.exports = (router) => {
                     orphanData.dob = data.dob,
                     orphanData.place_of_birth = data.place_of_birth,
                     orphanData.birth_status = data.birth_status,
-                    orphanData.birth_status = data.birth_status,
                     orphanData.present_whereabouts = data.present_whereabouts,
                     orphanData.date_admission = data.date_admission,
                     orphanData.date_surrendered = data.date_surrendered,
                     orphanData.category = data.category,
                     orphanData.moral = data.moral,
-                    orphanData.mointoring = data.mointoring,
+                    // orphanData.mointoring = data.mointoring,
+                    orphanData.place_where_found =  req.body.place_where_found,
+                    orphanData.souce_information =  req.body.souce_information,
+                    orphanData.circumstances = req.body.circumstances,
+                    orphanData.background_info =  req.body.background_info,
+                    orphanData.desc_child_admission = req.body.desc_child_admission,
+                    orphanData.dev_history =  req.body.dev_history,
+                    orphanData.desc_present_envi =  req.body.desc_present_envi,
+                    orphanData.termination_rights_abandonement = req.body.termination_rights_abandonement,
+                    orphanData.assesement_recomendation =  req.body.assesement_recomendation,
+
 
                     Orphan.findOneAndUpdate({ id: data.id }, orphanData, { upsert: true }, (err, response) => {
                         if (err) return res.json({ success: false, message: err.message });

@@ -35,9 +35,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!volunteer) {
-                    res.json({ success: false, message: 'No Volunteer found.' }); // Return error of no Volunteer found
+                    res.json({ success : true, name: getTotalVolunteer , total: volunteer  }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success: true, Volunteer: volunteer }); // Return success and SocialWorker array
+                    res.json({ success : true, name: getTotalVolunteer , total: volunteer  }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
@@ -47,8 +47,6 @@ module.exports = (router) => {
 
 
     router.post('/addVolunteer', (req, res) => {
-
-
 
         if (!req.body.email) {
             res.json({ success: false, message: 'You must provide an email' })

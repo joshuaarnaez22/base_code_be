@@ -34,9 +34,9 @@ module.exports = (router) => {
             } else {
                 // Check if Foster were found in database
                 if (!user) {
-                    res.json({ success: false, message: 'No Foster found.' }); // Return error of no Volunteer found
+                    res.json({ success : true, name: getTotalFoster , total: user  }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success: true, getTotalFoster: user }); // Return success and Foster array
+                    res.json({ success : true, name: getTotalFoster , total: user  }); // Return success and Foster array
                 }
             }
         }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
