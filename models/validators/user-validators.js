@@ -99,7 +99,8 @@ let emailLengthChecker = (email) => {
     if (!password) {
       return false;
     } else {
-      const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
+      const regExp = new RegExp(/(?=.*[a-z])(?=.*[A-Z])/);
+      // const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
       return regExp.test(password); // Return regular expression test result (true or false)
     }
   }
@@ -108,10 +109,10 @@ let emailLengthChecker = (email) => {
   module.exports.passwordValidator = [
   
     {
-      validator: passwordLengthChecker, message: 'Password must be at least 8 characters long but not more than 35 characters long'
+      validator: passwordLengthChecker, message: 'Password must   = 8 >= 35'
     },
     {
-      validator: validPassword, message: 'Password must have at least one upper case,  lower case letter, special characters and numbers'
+      validator: validPassword, message: 'Password must uppercase and lowercase'
     }
   
   ]

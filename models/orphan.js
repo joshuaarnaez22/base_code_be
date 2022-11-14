@@ -17,29 +17,36 @@ const orphanSchema = new Schema({
     place_of_birth :  { type: String,  },
     birth_status :  { type: String,  },
     present_whereabouts :  { type: String,  },
+    place_where_found :  { type: String,  },
     date_admission :  { type: Date,  },
     date_surrendered :  { type: Date,  },
     category :  { type: String,  },
+    souce_information :  { type: String,  },
+    circumstances :  { type: String,  },
+    background_info :  { type: String,  },
+    desc_child_admission :  { type: String,  },
+    dev_history :  { type: String,  },
+    desc_present_envi :  { type: String,  },
+    termination_rights_abandonement :  { type: String,  },
+    assesement_recomendation :  { type: String,  },
     moral :  { type: String,  },
-    mointoring : [
-
-        { 
-          education : { type: String,  } 
-        },
-        { 
-          daily_health : { type: String,  } 
-        },
-        { 
-          chores : { type: String,  } 
-        },
-        { 
-          action : { type: String,  } 
-        },
-        { 
-          meal : { type: Date,  } 
-        },
-
-    ],
+    // mointoring : [
+    //     { 
+    //       education : { type: String,  } 
+    //     },
+    //     { 
+    //       daily_health : { type: String,  } 
+    //     },
+    //     { 
+    //       chores : { type: String,  } 
+    //     },
+    //     { 
+    //       action : { type: String,  } 
+    //     },
+    //     { 
+    //       meal : { type: Date,  } 
+    //     },
+    // ],
   });
 
   
