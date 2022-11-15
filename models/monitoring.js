@@ -8,12 +8,13 @@ const monitoringSchema = new Schema({
       social_worker_id :  { type: String, required: true,  },
       orphan_id :  { type: String, required: true,  },
       status :  { type: String, default : 'active'  },
+      date :  { type: Date,  }, 
       deleted :  { type: Boolean, default : false  },
       education : { type: String,  }, 
       daily_health : { type: String,  },
       chores : { type: String,  }, 
       action : { type: String,  },
-      meal : { type: Date,  }
+      meal : { type: String,  }
   });
 
   

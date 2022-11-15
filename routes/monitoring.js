@@ -49,12 +49,9 @@ module.exports = (router) => {
 
     router.post('/addMonitoring', (req, res) => {
 
-
-
-        if (!req.body.firstname || !req.body.lastname) {
-            res.json({ success: false, message: 'You must provide an name or lastname' })
+        if (!req.body.social_worker_id || !req.body.orphan_id) {
+            res.json({ success: false, message: 'You must provide an all' })
         } else {
-
             let monitoring = new Monitoring({
                 id: uuidv4(),
                 social_worker_id: req.body.social_worker_id,
@@ -64,21 +61,18 @@ module.exports = (router) => {
                 chores: req.body.chores,
                 action: req.body.action,
                 meal: req.body.meal,
+                date: req.body.date,
             })
 
             monitoring.save((err, data) => {
                 if (err) {
-                    if (err.code === 11000) {
-                        res.json({ success: false, message: 'Monitoring Error', err: err.message })
+                    if (err.errors) {
+                        res.json({ success: false, message: err.errors.message })
                     } else {
-                        if (err.errors) {
-                            res.json({ success: false, message: err.errors.message })
-                        } else {
-                            res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
-                        }
+                        res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
                     }
                 } else {
-                    res.json({ success: true, message: 'monitoring Registered successfully', data: { email: data.email, monitoringname: data.monitoringname } });
+                    res.json({ success: true, message: 'monitoring Registered successfully', data: data });
                     // globalconnetion.emitter('monitoring')
                 }
             })
@@ -127,6 +121,7 @@ module.exports = (router) => {
                     monitoringData.daily_health = data.daily_health,
                     monitoringData.chores = data.chores,
                     monitoringData.action = data.action,
+                    monitoringData.date = data.date,
                     monitoringData.meal = data.meal,
                     
 
