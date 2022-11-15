@@ -36,9 +36,9 @@ module.exports = (router) => {
             } else {
                 // Check if SocialWorker were found in database
                 if (!orphan) {
-                    res.json({ success : true, name: 'getTotalOrphan' , total: orphan }); // Return error of no Volunteer found
+                    res.json({ success : true, name: 'Orphans' , total: orphan }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success : true, name: 'getTotalOrphan' , total: orphan }); // Return success and SocialWorker array
+                    res.json({ success : true, name: 'Orphans' , total: orphan }); // Return success and SocialWorker array
                 }
             }
         }); // Sort SocialWorker from newest to oldest
@@ -60,6 +60,7 @@ module.exports = (router) => {
                 firstname: req.body.firstname.toLowerCase(),
                 lastname: req.body.lastname.toLowerCase(),
                 age: req.body.age,
+                gender: req.body.gender,
                 height: req.body.height,
                 weight: req.body.weight,
                 waist: req.body.waist,
@@ -142,6 +143,7 @@ module.exports = (router) => {
                     orphanData.firstname = data.firstname.toLowerCase(),
                     orphanData.lastname = data.lastname.toLowerCase(),
                     orphanData.age = data.age,
+                    orphanData.gender = data.gender,
                     orphanData.height = data.height,
                     orphanData.weight = data.weight,
                     orphanData.waist = data.waist,
