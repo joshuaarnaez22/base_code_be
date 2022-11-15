@@ -18,6 +18,8 @@ const volunteer = require('./routes/volunteer')(router);
 const socialworker = require('./routes/socialworker')(router);
 const foster = require('./routes/foster')(router);
 const visitation = require('./routes/visitation')(router);
+const monitoring = require('./routes/monitoring')(router);
+const history = require('./routes/history')(router);
 
 mongoose.Promise = global.Promise;
 
@@ -50,6 +52,8 @@ app.use('/volunteers', volunteer);
 app.use('/socialworker', socialworker);
 app.use('/fosters', foster);
 app.use('/visitation', visitation);
+app.use('/monitoring', monitoring);
+app.use('/history', history);
 
 // app.get('*', (req, res) => {
 //      //res.send('<h1>Hello from the Server Side</h1>')
