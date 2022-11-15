@@ -46,10 +46,25 @@ app.use("/upload", express.static(path.join(__dirname, "./upload")));
 //api routes
 // app.use('/users', users);
 
+app.use("/authentication", authentication);
+app.use("/users", users);
+app.use("/orphans", orphan);
+app.use("/volunteers", volunteer);
+app.use("/socialworker", socialworker);
+app.use("/fosters", foster);
+app.use("/visitation", visitation);
+app.use("/monitoring", monitoring);
+app.use("/history", history);
+
 app.get("*", (req, res) => {
   res.send("<h1>Hello from the Server Side</h1>");
   // res.sendFile(path.join(__dirname + '/app/next/server/pages/index.html'),)
 });
+// app.get('*', (req, res) => {
+//      res.sendFile(path.join(publicPath, 'index.html'));
+//     // res.sendFile(path.join(__dirname + '/app/dist/index.html'),)
+//  });
+
 // app.get('*', (req, res) => {
 //     res.sendFile(path.join(publicPath, 'index.html'));
 //  });
