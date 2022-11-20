@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const config = require("../config/database");
+let bcrypt = require("bcryptjs");
 
 module.exports = (router) => {
   router.post("/register", (req, res) => {
