@@ -9,6 +9,7 @@ const historySchema = new Schema({
     action :  { type: String,  },
     status :    { type: Boolean, default : true },
     createdBy : { type: String  },
+    dateAdded :  { type: Date, default: new Date()  },
   });
 
   

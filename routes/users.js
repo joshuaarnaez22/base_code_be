@@ -2,13 +2,14 @@ const User = require("../models/user"); // Import User Model Schema
 const { v4: uuidv4 } = require("uuid");
 const hash = require("../config/password-hasher");
 let bcrypt = require("bcryptjs");
+const isot = require('../config/iso-to-string').isoToString
 
 module.exports = (router) => {
   router.get("/getAllUser", (req, res) => {
     // Search database for all blog posts
     User.find(
       { deleted: false },
-      { _id: 1, email: 1, username: 1, role: 1, status: 1, id: 1 },
+      { _id: 1, id: 1, email: 1, username: 1, role: 1, status: 1, id: 1, deleted : 1, dateAdded : 1 },
       (err, user) => {
         // Check if error was found or not
         if (err) {
@@ -18,12 +19,13 @@ module.exports = (router) => {
           if (!user) {
             res.json({ success: false, message: "No User found." }); // Return error of no blogs found
           } else {
-            res.json({ success: true, user: user }); // Return success and blogs array
+            res.json({ success: true, user: user.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) }); // Return success and blogs array
           }
         }
       }
     ).sort({ _id: -1 }); // Sort blogs from newest to oldest
   });
+  //Results.map(obj => ({ ...obj, Active: 'false' }))
 
   router.post("/addUser", (req, res) => {
     if (!req.body.email) {

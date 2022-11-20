@@ -2,7 +2,7 @@ const Orphan = require('../models/orphan'); // Import Orphan Model Schema
 const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
-
+const isot = require('../config/iso-to-string').isoToString;
 
 module.exports = (router) => {
 
@@ -18,12 +18,13 @@ module.exports = (router) => {
                 if (!orphan) {
                     res.json({ success: false, message: 'No Orphan found.' }); // Return error of no blogs found
                 } else {
-                    res.json({ success: true, orphan: orphan }); // Return success and blogs array
+                res.json({ success: true, orphan: orphan.map( e =>
+                    ({...e._doc, date_of_birth : isot(e.dob), date_of_admission : isot(e.date_admission), date_of_surrendered : isot(e.date_surrendered) })
+                    ) });
                 }
             }
         }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
     });
-
 
 
     router.get('/getTotalOrphan', (req, res) => {
@@ -97,7 +98,7 @@ module.exports = (router) => {
                         }
                     }
                 } else {
-                    res.json({ success: true, message: 'orphan Registered successfully', data: { email: data.email, orphanname: data.orphanname } });
+                    res.json({ success: true, message: 'orphan Registered successfully', data: orphan });
                     // globalconnetion.emitter('orphan')
                 }
             })

@@ -2,6 +2,7 @@ const Visitation = require('../models/visitation'); // Import User Model Schema
 const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
+const isot = require('../config/iso-to-string').isoToString
 
 
 module.exports = (router) => {
@@ -18,7 +19,8 @@ module.exports = (router) => {
                 if (!user) {
                     res.json({ success: false, message: 'No Visitation found.' }); // Return error of no Volunteer found
                 } else {
-                    res.json({ success: true, user: user }); // Return success and Visitation array
+                    res.json({ success:true, data: user.map( e => ({ ...e._doc, date_added : isot(e.dateAdded) }) )  });
+                    //return  res.json({ success: true, user: user }); // Return success and Visitation array
                 }
             }
         }).sort({ '_id': -1 }); // Sort Visitation from newest to oldest

@@ -2,26 +2,66 @@ const History = require('../models/history'); // Import History Model Schema
 const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
+const e = require('express');
+const isot = require('../config/iso-to-string').isoToString
 
 
 module.exports = (router) => {
 
     router.get('/getAllHistory', (req, res) => {
 
-        // Search database for all blog posts
-        History.find({ status: true }, {}, (err, history) => {
-            // Check if error was found or not
-            if (err) {
-                res.json({ success: false, message: err }); // Return error message
-            } else {
-                // Check if blogs were found in database
-                if (!history) {
-                    res.json({ success: false, message: 'No History found.' }); // Return error of no blogs found
-                } else {
-                    res.json({ success: true, history: history }); // Return success and blogs array
+        
+        History.aggregate([
+        
+            {
+                $lookup:
+                    {
+                        from: "users",
+                        localField: "createdBy",
+                        foreignField: "id",
+                        as: "history"
+                    }
+            },
+            {
+                $unwind: "$history"
+            },
+            {
+                $project: {
+                    id: 1,
+                    creator: { $concat: [
+                        { $ifNull: [ "$history.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$history.lastname", "" ] }, " ",
+                       ]
+                    },
+                    date: "$date",
+                    action: "$action",
+                    status: "$status",
+                    dateAdded: "$dateAdded",
                 }
             }
-        }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
+        ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
+                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' });
+                }
+            }
+        );
+        // History.find({ status: true }, {}, (err, history) => {
+        //     // Check if error was found or not
+        //     if (err) {
+        //         res.json({ success: false, message: err }); // Return error message
+        //     } else {
+               
+        //         if (!history) {
+        //             res.json({ success: false, message: 'No History found.' }); // Return 
+        //         } else {
+        //             res.json({ success: true, history: history.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) });
+        //         }
+        //     }
+        // }).sort({ '_id': -1 }); 
     });
 
 

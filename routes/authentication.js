@@ -127,29 +127,42 @@ module.exports = (router) => {
                 res.json({ success: false, message: "User not found" });
               } else {
                 //user found compare the password
-                const validPassword = user.comparePassword(req.body.password);
-                if (!validPassword) {
-                  res.json({
-                    success: false,
-                    message: "Password is incorrect",
-                  });
-                } else {
-                  const token = jwt.sign(
-                    { userID: user._id, role: user.role },
-                    config.secret,
-                    {
-                      expiresIn: "24h",
-                    }
-                  );
-                  res.json({
-                    success: true,
-                    message: "Password is Correct",
-                    token: token,
-                    user: { username: user.username },
-                    userToken: user.username,
-                    role: user.role,
-                  });
+
+                bcrypt.compare(req.body.password, user.password).then(function(result) {
+                  if (!result) {
+                    res.json({ success: false, message: 'Password is incorrect' })
+                  } else {
+                    const token = jwt.sign({ userID: user._id }, config.secret, { expiresIn: '24h' });
+                    res.json({ success: true, message: 'Password is Correct', token: token, user: { username: user.username }, userToken: user.username, role: user.role },)
+                  }
+                }, function(err) {
+                  console.log(err); // Error: "It broke"
+                }); ;
+                // const validPassword = user.comparePassword(req.body.password);
+                // if (!validPassword) {
+                //   res.json({
+                //     success: false,
+                //     message: "Password is incorrect",
+                //   });
+                // } else {
+                //   const token = jwt.sign(
+                //     { userID: user._id, role: user.role },
+                //     config.secret,
+                //     {
+                //       expiresIn: "24h",
+                //     }
+                //   );
+                //   res.json({
+                //     success: true,
+                //     message: "Password is Correct",
+                //     token: token,
+                //     user: { username: user.username },
+                //     userToken: user.username,
+                //     role: user.role,
+                //   });
                 }
+
+
               }
             }
           }
