@@ -9,7 +9,6 @@ const isot = require('../config/iso-to-string').isoToString
 module.exports = (router) => {
 
     router.get('/getAllHistory', (req, res) => {
-
         
         History.aggregate([
         
@@ -49,19 +48,6 @@ module.exports = (router) => {
                 }
             }
         );
-        // History.find({ status: true }, {}, (err, history) => {
-        //     // Check if error was found or not
-        //     if (err) {
-        //         res.json({ success: false, message: err }); // Return error message
-        //     } else {
-               
-        //         if (!history) {
-        //             res.json({ success: false, message: 'No History found.' }); // Return 
-        //         } else {
-        //             res.json({ success: true, history: history.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) });
-        //         }
-        //     }
-        // }).sort({ '_id': -1 }); 
     });
 
 

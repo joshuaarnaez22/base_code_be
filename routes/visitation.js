@@ -9,21 +9,96 @@ module.exports = (router) => {
 
     router.get('/getAllVisitation', (req, res) => {
 
-        // Search database for all blog posts
-        Visitation.find({ deleted: false }, { id: 1, user_id: 1, orphan_id: 1, purpose: 1, status: 1 }, (err, user) => {
-            // Check if error was found or not
-            if (err) {
-                res.json({ success: false, message: err }); // Return error message
-            } else {
-                // Check if Visitation were found in database
-                if (!user) {
-                    res.json({ success: false, message: 'No Visitation found.' }); // Return error of no Volunteer found
-                } else {
-                    res.json({ success:true, data: user.map( e => ({ ...e._doc, date_added : isot(e.dateAdded) }) )  });
-                    //return  res.json({ success: true, user: user }); // Return success and Visitation array
+
+            
+        Visitation.aggregate([
+        
+            {
+                $lookup:
+                    {
+                        from: "users",
+                        localField: "user_id",
+                        foreignField: "id",
+                        as: "users"
+                    }
+            },
+            {
+                $unwind: "$users"
+            },
+            {
+                $lookup:
+                    {
+                        from: "orphans",
+                        localField: "orphan_id",
+                        foreignField: "id",
+                        as: "orphans"
+                    }
+            },
+            {
+                $unwind: "$orphans"
+            },
+            {
+                $project: {
+                    id: 1,
+                    users: { $concat: [
+                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
+                       ]
+                    },
+                    orphan: { $concat: [
+                        { $ifNull: [ "$orphans.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$orphans.lastname", "" ] }, " ",
+                       ]
+                    },
+                    user_id: "$user_id",
+                    orphan_id: "$orphan_id",
+                    purpose: "$purpose",
+                    status: "$status",
+                    deleted: "$deleted",
+                    dateAdded: "$dateAdded",
                 }
             }
-        }).sort({ '_id': -1 }); // Sort Visitation from newest to oldest
+        ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
+                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' });
+                }
+            }
+        );
+        
+        /*
+          "_id" : ObjectId("636f961380c8d2a33a3c22e9"),
+    "id" : "8af201d3-24d1-448a-b65a-ec990b6bd42b",
+    "user_id" : "2",
+    "orphan_id" : "0",
+    "date" : ISODate("2022-10-30T10:26:49.000Z"),
+    "purpose" : "'trip2 lang'",
+    "status" : "cancelled",
+    "deleted" : true,
+    "__v" : 0,
+    "dateAdded" : ISODate("2022-11-20T12:06:10.687Z")
+        
+        */
+
+
+        // // Search database for all blog posts
+        // Visitation.find({ deleted: false }, { id: 1, user_id: 1, orphan_id: 1, purpose: 1, status: 1 }, (err, user) => {
+        //     // Check if error was found or not
+        //     if (err) {
+        //         res.json({ success: false, message: err }); // Return error message
+        //     } else {
+        //         // Check if Visitation were found in database
+        //         if (!user) {
+        //             res.json({ success: false, message: 'No Visitation found.' }); // Return error of no Volunteer found
+        //         } else {
+        //             res.json({ success:true, data: user.map( e => ({ ...e._doc, date_added : isot(e.dateAdded) }) )  });
+        //             //return  res.json({ success: true, user: user }); // Return success and Visitation array
+        //         }
+        //     }
+        // }).sort({ '_id': -1 }); // Sort Visitation from newest to oldest
     });
 
 
@@ -106,7 +181,7 @@ module.exports = (router) => {
         let visitation = new Visitation({
             id: uuidv4(),
             user_id: req.body.user_id,
-            orphan_id: !req.body.orphan_id === 0 ? req.body.orphan_id : 0,
+            orphan_id: !req.body.orphan_id ? '' : req.body.orphan_id,
             date: req.body.date,
             role: !req.body.role ? '' : req.body.role,  
             purpose : !req.body.purpose ? '' :  req.body.purpose.toLowerCase(),
