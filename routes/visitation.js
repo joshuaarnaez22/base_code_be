@@ -23,7 +23,10 @@ module.exports = (router) => {
                     }
             },
             {
-                $unwind: "$users"
+                $unwind : {
+                    path : "$users",
+                    preserveNullAndEmptyArrays: true,
+                  }
             },
             {
                 $lookup:
@@ -35,7 +38,10 @@ module.exports = (router) => {
                     }
             },
             {
-                $unwind: "$orphans"
+                $unwind : {
+                    path : "$orphans",
+                    preserveNullAndEmptyArrays: true,
+                  }
             },
             {
                 $project: {
