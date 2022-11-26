@@ -138,7 +138,7 @@ module.exports = (router) => {
         //if they change thier password
         if (data.changePassword) {
           let checkPassword = await bcrypt.compare(
-            data.old_password,
+            data.newPassword,
             docs.password
           );
 
@@ -149,7 +149,7 @@ module.exports = (router) => {
             });
           } else {
             hash
-              .encryptPassword(data.new_password)
+              .encryptPassword(data.newPassword)
               .then((hash) => {
                 userData.role = data.role;
                 userData.username = data.username;
@@ -193,7 +193,7 @@ module.exports = (router) => {
           userData.lastname = data.lastname || "";
           userData.address = data.address || "";
           userData.email = data.email;
-          userData.status = data.status;
+          // userData.status = data.status;
           User.findOneAndUpdate(
             { id: data.id },
             userData,
