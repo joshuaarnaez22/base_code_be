@@ -108,7 +108,7 @@ module.exports = (router) => {
             user_id: req.body.user_id,
             orphan_id: !req.body.orphan_id === 0 ? req.body.orphan_id : 0,
             date: req.body.date,
-            role: req.body.role.toLowerCase(),
+            role: req.body.role.toLowerCase() || '',  
             purpose : req.body.purpose?.toLowerCase() || '',
             
         });
