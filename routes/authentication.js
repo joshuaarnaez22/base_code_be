@@ -149,7 +149,7 @@ module.exports = (router) => {
                       role: user.role,
                     });
 
-                  // const token = jwt.sign({ userID: user._id }, config.secret, { expiresIn: '24h' });
+                  // const token = jwt.sign({ userID: user._id,  role: user.role }, config.secret, { expiresIn: '24h' });
                   // res.json({ success: true, message: 'Password is Correct', token: token, user: { username: user.username }, userToken: user.username, role: user.role },)
                   }
                   }, function(err) {

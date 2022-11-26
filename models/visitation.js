@@ -7,6 +7,7 @@ const visitationSchema = new Schema({
     user_id :  { type: String,  },
     orphan_id :  { type: String,   },
     date :  { type: Date,   },
+    role :  { type: String,   },
     purpose :  { type: String,   },
     status: { type: String, default: 'pending' },
     deleted: { type: Boolean, default: 'false' },
