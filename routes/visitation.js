@@ -64,41 +64,10 @@ module.exports = (router) => {
                 if( results.length ){
                     return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
                 }else{
-                    return res.json({ success:false, message: "No data found!", toaster: 'off' });
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' , data : [] });
                 }
             }
         );
-        
-        /*
-          "_id" : ObjectId("636f961380c8d2a33a3c22e9"),
-    "id" : "8af201d3-24d1-448a-b65a-ec990b6bd42b",
-    "user_id" : "2",
-    "orphan_id" : "0",
-    "date" : ISODate("2022-10-30T10:26:49.000Z"),
-    "purpose" : "'trip2 lang'",
-    "status" : "cancelled",
-    "deleted" : true,
-    "__v" : 0,
-    "dateAdded" : ISODate("2022-11-20T12:06:10.687Z")
-        
-        */
-
-
-        // // Search database for all blog posts
-        // Visitation.find({ deleted: false }, { id: 1, user_id: 1, orphan_id: 1, purpose: 1, status: 1 }, (err, user) => {
-        //     // Check if error was found or not
-        //     if (err) {
-        //         res.json({ success: false, message: err }); // Return error message
-        //     } else {
-        //         // Check if Visitation were found in database
-        //         if (!user) {
-        //             res.json({ success: false, message: 'No Visitation found.' }); // Return error of no Volunteer found
-        //         } else {
-        //             res.json({ success:true, data: user.map( e => ({ ...e._doc, date_added : isot(e.dateAdded) }) )  });
-        //             //return  res.json({ success: true, user: user }); // Return success and Visitation array
-        //         }
-        //     }
-        // }).sort({ '_id': -1 }); // Sort Visitation from newest to oldest
     });
 
 
