@@ -106,7 +106,7 @@ module.exports = (router) => {
         let visitation = new Visitation({
             id: uuidv4(),
             user_id: req.body.user_id,
-            orphan_id: !req.body.orphan_id === 0  || 0,
+            orphan_id: !req.body.orphan_id === 0 ? req.body.orphan_id : 0,
             date: req.body.date,
             role: req.body.role.toLowerCase(),
             purpose : req.body.purpose?.toLowerCase() || '',
