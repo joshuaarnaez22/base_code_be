@@ -8,8 +8,6 @@ const isot = require('../config/iso-to-string').isoToString
 module.exports = (router) => {
 
     router.get('/getAllVisitation', (req, res) => {
-
-
             
         Visitation.aggregate([
         
@@ -206,9 +204,6 @@ module.exports = (router) => {
             })
         }
 
-
-        
-
     });
 
 
@@ -257,8 +252,6 @@ module.exports = (router) => {
     });
 
 
-
-
     router.put('/updateVisitation', (req, res) =>   {
 
         let data = req.body;
@@ -285,8 +278,38 @@ module.exports = (router) => {
                     });
             }
         })
-
     });
+
+
+    router.put('/updateVisitationWithOrphan', (req, res) =>   {
+
+        let data = req.body;
+        let visitationData = {};
+
+        Visitation.findOne({id: data.id }, async (err,docs) => {
+            if (err){
+                res.json({ success: false, message: 'Error unable to Process Find this Visitation : ' + err })
+            }
+            else{
+                 
+                    visitationData.orphan_id = data.orphan_id;
+                   
+                    Visitation.findOneAndUpdate({ id: data.id }, visitationData, { upsert: true }, (err, response) => {
+                        if (err) return res.json({ success: false, message: err.message });
+                        if (response) {
+                             res.json({ success: true, message: "Visitation Information has been updated!", data: response  });
+                        } else {
+                            res.json({ success: true, message: "No Visitation has been modified!", data: response });
+                        }
+                    });
+            }
+        })
+    });
+
+
+
+
+
 
     return router;
 };
