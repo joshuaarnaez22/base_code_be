@@ -307,19 +307,97 @@ module.exports = (router) => {
     });
 
 
-    router.post('/getAllVisitationForLoggedUser', (req, res) =>   {
+    // router.post('/getAllVisitationForLoggedUser', (req, res) =>   {
 
-        let data = req.body;
+    //     let data = req.body;
 
-        Visitation.find({ user_id: data.user_id }, async (err,docs) => {
-            if (err){
-                res.json({ success: false, message: 'Error Fetching Visitation : ' + err })
+    //     Visitation.find({ user_id: data.user_id }, async (err,docs) => {
+    //         if (err){
+    //             res.json({ success: false, message: 'Error Fetching Visitation : ' + err })
+    //         }
+    //         else{
+    //             res.json({ success: true, data: docs  });
+    //         }
+    //     })
+    // });
+
+
+
+
+    router.get('/getAllVisitationForLoggedUser', (req, res) => {
+            
+        Visitation.aggregate([
+        
+            {
+                $lookup:
+                    {
+                        from: "users",
+                        localField: "user_id",
+                        foreignField: "id",
+                        as: "users"
+                    }
+            },
+            {
+                $unwind : {
+                    path : "$users",
+                    preserveNullAndEmptyArrays: true,
+                  }
+            },
+            {
+                $lookup:
+                    {
+                        from: "orphans",
+                        localField: "orphan_id",
+                        foreignField: "id",
+                        as: "orphans"
+                    }
+            },
+            {
+                $unwind : {
+                    path : "$orphans",
+                    preserveNullAndEmptyArrays: true,
+                  }
+            },
+            { 
+                
+                $match : {
+                    user_id: req.body.user_id
+                }  
+            },
+            {
+                $project: {
+                    id: 1,
+                    users: { $concat: [
+                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
+                       ]
+                    },
+                    orphan: { $concat: [
+                        { $ifNull: [ "$orphans.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$orphans.lastname", "" ] }, " ",
+                       ]
+                    },
+                    user_id: "$user_id",
+                    orphan_id: "$orphan_id",
+                    purpose: "$purpose",
+                    status: "$status",
+                    deleted: "$deleted",
+                    dateAdded: "$dateAdded",
+                }
             }
-            else{
-                res.json({ success: true, data: docs  });
+        ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
+                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' , data : [] });
+                }
             }
-        })
+        );
     });
+
+
 
 
     return router;
