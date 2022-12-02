@@ -324,7 +324,7 @@ module.exports = (router) => {
 
 
 
-    router.get('/getAllVisitationForLoggedUser', (req, res) => {
+    router.post('/getAllVisitationForLoggedUser', (req, res) => {
             
         Visitation.aggregate([
         
