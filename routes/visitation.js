@@ -307,8 +307,19 @@ module.exports = (router) => {
     });
 
 
+    router.post('/getAllVisitationForLoggedUser', (req, res) =>   {
 
+        let data = req.body;
 
+        Visitation.find({ user_id: data.user_id }, async (err,docs) => {
+            if (err){
+                res.json({ success: false, message: 'Error Fetching Visitation : ' + err })
+            }
+            else{
+                res.json({ success: true, data: docs  });
+            }
+        })
+    });
 
 
     return router;
