@@ -293,6 +293,7 @@ module.exports = (router) => {
             else{
                  
                     visitationData.orphan_id = data.orphan_id;
+                    visitationData.status = "pending";
                    
                     Visitation.findOneAndUpdate({ id: data.id }, visitationData, { upsert: true }, (err, response) => {
                         if (err) return res.json({ success: false, message: err.message });
