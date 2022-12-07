@@ -192,7 +192,7 @@ module.exports = (router) => {
             }
             else{
 
-                    monitoringData.social_worker_id = data.social_worker_id,
+                    monitoringData.addedby = data.addedby,
                     monitoringData.orphan_id = data.orphan_id,
                     monitoringData.education = data.education,
                     monitoringData.daily_health = data.daily_health,
