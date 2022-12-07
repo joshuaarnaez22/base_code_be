@@ -29,7 +29,6 @@ module.exports = (router) => {
     router.get('/getAllActiveOrphanApi', (req, res) => {
 
         Orphan.aggregate([
-       
             {
                 $match : {
                     "status" : "active",

@@ -49,34 +49,75 @@ module.exports = (router) => {
 
     router.post('/addMonitoring', (req, res) => {
 
-        if (!req.body.social_worker_id || !req.body.orphan_id) {
-            res.json({ success: false, message: 'You must provide an all' })
-        } else {
-            let monitoring = new Monitoring({
-                id: uuidv4(),
-                social_worker_id: req.body.social_worker_id,
-                orphan_id: req.body.orphan_id,
-                education: req.body.education,
-                daily_health: req.body.daily_health,
-                chores: req.body.chores,
-                action: req.body.action,
-                meal: req.body.meal,
-                date: req.body.date,
-            })
+      
 
-            monitoring.save((err, data) => {
-                if (err) {
-                    if (err.errors) {
-                        res.json({ success: false, message: err.errors.message })
+            if(req.body.orphan_id.length <= 1){
+
+                let monitoring = new Monitoring({
+                    id: uuidv4(),
+                    addedby: req.body.addedby,
+                    orphan_id: req.body.orphan_id,
+                    education: req.body.education,
+                    daily_health: req.body.daily_health,
+                    chores: req.body.chores,
+                    action: req.body.action,
+                    meal: req.body.meal,
+                    date: req.body.date,
+                })
+
+                monitoring.save((err, data) => {
+                    if (err) {
+                        if (err.errors) {
+                            res.json({ success: false, message: err.errors.message })
+                        } else {
+                            res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
+                        }
                     } else {
-                        res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
+                        res.json({ success: true, message: 'monitoring Registered successfully', data: data });
+                        // globalconnetion.emitter('monitoring')
                     }
-                } else {
-                    res.json({ success: true, message: 'monitoring Registered successfully', data: data });
-                    // globalconnetion.emitter('monitoring')
-                }
-            })
-        }
+                })
+
+    
+            }else{
+                console.log('else');
+
+                let monitoring = [];
+
+                req.body.orphan_id.map(e => {
+
+                      monitoring.push(new Monitoring({
+                        id: uuidv4(),
+                        addedby: req.body.addedby,
+                        orphan_id: e.id,
+                        education: req.body.education,
+                        daily_health: req.body.daily_health,
+                        chores: req.body.chores,
+                        action: req.body.action,
+                        meal: req.body.meal,
+                        date: req.body.date,
+                    }));
+                })
+
+                Monitoring.insertMany(monitoring, (err, data) => {
+
+                    if (err) {
+                        if (err.errors) {
+                            res.json({ success: false, message: err.errors.message })
+                        } else {
+                            res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
+                        }
+                    } else {
+                        res.json({ success: true, message: 'monitoring Registered successfully', data: data });
+                        // globalconnetion.emitter('monitoring')
+                    }
+                });
+                
+
+
+
+            }
+    
 
     });
 
