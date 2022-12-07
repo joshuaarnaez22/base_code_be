@@ -63,6 +63,7 @@ module.exports = (router) => {
                     }, ' '
                   ]
                 }, 
+                "role" : "$users.role",
                 'orphan_id': '$orphan_id', 
                 'status': '$status', 
                 'date': '$date', 
