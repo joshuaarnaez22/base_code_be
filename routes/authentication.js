@@ -134,7 +134,7 @@ module.exports = (router) => {
                   res.json({ success: false, message: 'Password is incorrect' })
                   } else {
                     const token = jwt.sign(
-                      { userID: user.id, role: user.role },
+                      { userID: user._id, role: user.role, userId : user.id },
                       config.secret,
                       {
                         expiresIn: "24h",
