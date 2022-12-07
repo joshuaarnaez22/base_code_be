@@ -2,26 +2,93 @@ const Monitoring = require('../models/monitoring'); // Import Monitoring Model S
 const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
+const isot = require('../config/iso-to-string').isoToString
 
 
 module.exports = (router) => {
 
     router.get('/getAllMonitoring', (req, res) => {
 
-        // Search database for all blog posts
-        Monitoring.find({ deleted: false }, {}, (err, monitoring) => {
-            // Check if error was found or not
-            if (err) {
-                res.json({ success: false, message: err }); // Return error message
-            } else {
-                // Check if blogs were found in database
-                if (!monitoring) {
-                    res.json({ success: false, message: 'No Monitoring found.' }); // Return error of no blogs found
-                } else {
-                    res.json({ success: true, monitoring: monitoring }); // Return success and blogs array
+        Monitoring.aggregate([
+            {
+              '$lookup': {
+                'from': 'users', 
+                'localField': 'addedby', 
+                'foreignField': 'id', 
+                'as': 'users'
+              }
+            }, {
+              '$unwind': {
+                'path': '$users', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'orphans', 
+                'localField': 'orphan_id', 
+                'foreignField': 'id', 
+                'as': 'orphans'
+              }
+            }, {
+              '$unwind': {
+                'path': '$orphans', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$project': {
+                'id': 1, 
+                'users': {
+                  '$concat': [
+                    {
+                      '$ifNull': [
+                        '$users.firstname', ''
+                      ]
+                    }, ', ', {
+                      '$ifNull': [
+                        '$users.lastname', ''
+                      ]
+                    }, ' '
+                  ]
+                }, 
+                'orphan': {
+                  '$concat': [
+                    {
+                      '$ifNull': [
+                        '$orphans.firstname', ''
+                      ]
+                    }, ', ', {
+                      '$ifNull': [
+                        '$orphans.lastname', ''
+                      ]
+                    }, ' '
+                  ]
+                }, 
+                'orphan_id': '$orphan_id', 
+                'status': '$status', 
+                'date': '$date', 
+                'deleted': '$deleted', 
+                'education': '$education', 
+                'daily_health': '$daily_health', 
+                'chores': '$chores', 
+                'action': '$action', 
+                'meal': '$meal'
+              }
+            }
+          ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
+                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' , data : [] });
                 }
             }
-        }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
+        );
+
+
+
+
+
     });
 
 
@@ -42,6 +109,8 @@ module.exports = (router) => {
                 }
             }
         }); // Sort SocialWorker from newest to oldest
+
+        
     });
 
 
@@ -49,41 +118,8 @@ module.exports = (router) => {
 
     router.post('/addMonitoring', (req, res) => {
 
-      
-
-            if(req.body.orphan_id.length <= 1){
-
-                let monitoring = new Monitoring({
-                    id: uuidv4(),
-                    addedby: req.body.addedby,
-                    orphan_id: req.body.orphan_id,
-                    education: req.body.education,
-                    daily_health: req.body.daily_health,
-                    chores: req.body.chores,
-                    action: req.body.action,
-                    meal: req.body.meal,
-                    date: req.body.date,
-                })
-
-                monitoring.save((err, data) => {
-                    if (err) {
-                        if (err.errors) {
-                            res.json({ success: false, message: err.errors.message })
-                        } else {
-                            res.json({ success: false, message: 'Could not save monitoring Error : ' + err })
-                        }
-                    } else {
-                        res.json({ success: true, message: 'monitoring Registered successfully', data: data });
-                        // globalconnetion.emitter('monitoring')
-                    }
-                })
-
-    
-            }else{
-                console.log('else');
-
+            if(req.body.orphan_id.length){
                 let monitoring = [];
-
                 req.body.orphan_id.map(e => {
 
                       monitoring.push(new Monitoring({
@@ -112,10 +148,9 @@ module.exports = (router) => {
                         // globalconnetion.emitter('monitoring')
                     }
                 });
-                
-
-
-
+    
+            }else{
+                res.json({ success: false, message: 'Could not save monitoring Error : ' })   
             }
     
 
