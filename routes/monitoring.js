@@ -37,7 +37,7 @@ module.exports = (router) => {
             }, {
               '$project': {
                 'id': 1, 
-                'users': {
+                'addedByName': {
                   '$concat': [
                     {
                       '$ifNull': [
@@ -50,7 +50,7 @@ module.exports = (router) => {
                     }, ' '
                   ]
                 }, 
-                'orphan': {
+                'orphanName': {
                   '$concat': [
                     {
                       '$ifNull': [
