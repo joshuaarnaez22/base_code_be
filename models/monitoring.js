@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 
 const monitoringSchema = new Schema({
       id :  { type: String, required: true,  },
-      social_worker_id :  { type: String, required: true,  },
+      addedby :  { type: String, required: true,  },
       orphan_id :  { type: String, required: true,  },
       status :  { type: String, default : 'active'  },
       date :  { type: Date,  }, 

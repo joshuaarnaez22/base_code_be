@@ -26,6 +26,37 @@ module.exports = (router) => {
         }).sort({ '_id': -1 }); // Sort blogs from newest to oldest
     });
 
+    router.get('/getAllActiveOrphanApi', (req, res) => {
+
+        Orphan.aggregate([
+       
+            {
+                $match : {
+                    "status" : "active",
+                  }
+            },
+            {
+                $project: {
+                    id: 1,
+                    orphans: { $concat: [
+                        { $ifNull: [ "$firstname", "" ] }, ", ",
+                        { $ifNull: [ "$lastname", "" ] }, " ",
+                       ]
+                    }
+                }
+            }
+        ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
+                    return res.json({ success:true, data: results });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' , data : [] });
+                }
+            }
+        );
+    });
+
 
     router.get('/getTotalOrphan', (req, res) => {
 
@@ -46,6 +77,8 @@ module.exports = (router) => {
     });
 
 
+
+    
 
 
     router.post('/addOrphan', (req, res) => {
