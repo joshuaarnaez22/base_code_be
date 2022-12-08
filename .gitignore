@@ -6,3 +6,4 @@ app
 testing against ignore
 /config
 config
+config/database.js
