@@ -25,5 +25,90 @@ module.exports = (router) => {
         } )
     });
 
+
+
+    router.get('/getAllInquiry', (req, res) =>{
+
+        Inquiry.find(
+            { deleted: false },
+            (err, inquiryData) => {
+              // Check if error was found or not
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if blogs were found in database
+                if (!inquiryData) {
+                  res.json({ success: false, message: "No Inquiry found." }); // Return error of no blogs found
+                } else {
+                  res.json({ success: true, inquiryData: inquiryData.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) }); // Return success and blogs array
+                }
+              }
+            }
+          ).sort({ _id: -1 });
+
+    });
+
+
+    router.put('/deleteInquiry', (req, res) => {
+
+        let data = req.body;
+
+        Inquiry.deleteOne({
+            id: data.id
+        }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: 'Could not Delete Inquiry' + err })
+                } else {
+                    res.json({ success: true, message: ' Successfully Deleted the Inquiry', data: user });
+                    // globalconnetion.emitter('user')
+                }
+            })
+
+
+    });
+
+
+    router.put('/updateStatusInquiry', (req, res) => {
+
+        let data = req.body;
+
+        Inquiry.findOne({id: data.id }, async (err,docs) => {
+            if (err){
+                res.json({ success: false, message: 'Error unable to Process Inquiry update: ' + err })
+            }
+            else{
+                    Inquiry.findOneAndUpdate({ id: data.id }, { status : data.status, deleted : data.deleted}, { upsert: true }, (err, response) => {
+                        if (err) return res.json({ success: false, message: err.message });
+                        if (response) {
+                             res.json({ success: true, message: "Inquiry Information has been updated!", data: response  });
+                        } else {
+                            res.json({ success: true, message: "No Inquiry has been modified!", data: response });
+                        }
+                    });
+            }
+        })
+    });
+    router.put('/updateReadStatusInquiry', (req, res) => {
+
+        let data = req.body;
+
+        Inquiry.findOne({id: data.id }, async (err,docs) => {
+            if (err){
+                res.json({ success: false, message: 'Error unable to Process Inquiry update: ' + err })
+            }
+            else{
+                    Inquiry.findOneAndUpdate({ id: data.id }, { read : data.read }, { upsert: true }, (err, response) => {
+                        if (err) return res.json({ success: false, message: err.message });
+                        if (response) {
+                             res.json({ success: true, message: "Inquiry Information has been updated!", data: response  });
+                        } else {
+                            res.json({ success: true, message: "No Inquiry has been modified!", data: response });
+                        }
+                    });
+            }
+        })
+    });
+
+
     return router;
 };
