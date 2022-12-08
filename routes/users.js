@@ -9,7 +9,6 @@ module.exports = (router) => {
     // Search database for all blog posts
     User.find(
       { deleted: false },
-      { _id: 1, id: 1, email: 1, username: 1, role: 1, status: 1, id: 1, deleted : 1, dateAdded : 1 },
       (err, user) => {
         // Check if error was found or not
         if (err) {

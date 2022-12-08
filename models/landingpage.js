@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
-let bcrypt = require('bcryptjs');
 const { Schema } = mongoose;
 
 
 const landingPageSchema = new Schema({
     id :  { type: String, required: true,  },
-    date :  { type: Date, required: true,  },
     information :  { type: String,  },
     services :  [
         {
