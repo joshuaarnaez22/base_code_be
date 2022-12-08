@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const hash = require('../config/password-hasher');
 let bcrypt = require('bcryptjs');
 const isot = require('../config/iso-to-string').isoToString
+const Orphan = require('../models/orphan'); // Import Orphan Model Schema
 
 
 module.exports = (router) => {
@@ -298,7 +299,15 @@ module.exports = (router) => {
                     Visitation.findOneAndUpdate({ id: data.id }, visitationData, { upsert: true }, (err, response) => {
                         if (err) return res.json({ success: false, message: err.message });
                         if (response) {
-                             res.json({ success: true, message: "Visitation Information has been updated!", data: response  });
+                        
+                            Orphan.findOneAndUpdate( { id : data.orphan_id  }, { status : 'adopted' },  (err, response) => {
+                                if(err){
+                                    if (err) return res.json({ success: false, message: err.message });
+
+                                }else{
+                                    res.json({ success: true, message: "Visitation Information has been updated! and Orphan is set to Adopted", data: response  });
+                                }
+                            } )
                         } else {
                             res.json({ success: true, message: "No Visitation has been modified!", data: response });
                         }
