@@ -1,7 +1,5 @@
 const Visitation = require('../models/visitation'); // Import User Model Schema
 const { v4: uuidv4 } = require('uuid');
-const hash = require('../config/password-hasher');
-let bcrypt = require('bcryptjs');
 const isot = require('../config/iso-to-string').isoToString
 const Orphan = require('../models/orphan'); // Import Orphan Model Schema
 
