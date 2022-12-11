@@ -6,7 +6,7 @@ const inqurySchema = new Schema({
     id :  { type: String, required: true,  },
     name : { type: String,  },
     message : { type: String,  required : true},
-    phone :  { type: Number,  },
+    phone :  { type: String,  },
     email : { type: String,  },
     status :    { type: Boolean, default : true },
     read :    { type: Boolean, default : false },

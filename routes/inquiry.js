@@ -40,7 +40,7 @@ module.exports = (router) => {
                 if (!inquiryData) {
                   res.json({ success: false, message: "No Inquiry found." }); // Return error of no blogs found
                 } else {
-                  res.json({ success: true, inquiryData: inquiryData.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) }); // Return success and blogs array
+                  res.json({ success: true, inquiryData: inquiryData.map( e => ({ ...e._doc , date_added : isot(e.dateAdded), reads : e.read ? 'read' : 'unread', }) ) }); // Return success and blogs array
                 }
               }
             }
