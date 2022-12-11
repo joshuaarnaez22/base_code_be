@@ -18,7 +18,7 @@ module.exports = (router) => {
           if (!user) {
             res.json({ success: false, message: "No User found." }); // Return error of no blogs found
           } else {
-            res.json({ success: true, user: user.map( e => ({ ...e._doc , date_added : isot(e.dateAdded) } ) ) }); // Return success and blogs array
+            res.json({ success: true, user: user.map(e => ({ ...e._doc, date_added: isot(e.dateAdded) })) }); // Return success and blogs array
           }
         }
       }
@@ -138,50 +138,50 @@ module.exports = (router) => {
       } else {
         //if they change thier password
         if (data.changePassword) {
-          if(data.type === 'admin'){
+          if (data.type === 'admin') {
             hash
-            .encryptPassword(data.newPassword)
-            .then((hash) => {
-              userData.role = data.role;
-              userData.username = data.username;
-              userData.email = data.email;
-              userData.password = hash;
-              userData.firstname = data.firstname || "";
-              userData.lastname = data.lastname || "";
-              userData.address = data.address || "";
-              changedPassword = true;
-              User.findOneAndUpdate(
-                { id: data.id },
-                userData,
-                { upsert: true },
-                (err, response) => {
-                  if (err)
-                    return res.json({ success: false, message: err.message });
-                  if (response) {
-                    res.json({
-                      success: true,
-                      message: "User Information has been updated!",
-                      data: response,
-                    });
-                  } else {
-                    res.json({
-                      success: true,
-                      message: "No User has been modified!",
-                      data: response,
-                    });
+              .encryptPassword(data.newPassword)
+              .then((hash) => {
+                userData.role = data.role;
+                userData.username = data.username;
+                userData.email = data.email;
+                userData.password = hash;
+                userData.firstname = data.firstname || "";
+                userData.lastname = data.lastname || "";
+                userData.address = data.address || "";
+                changedPassword = true;
+                User.findOneAndUpdate(
+                  { id: data.id },
+                  userData,
+                  { upsert: true },
+                  (err, response) => {
+                    if (err)
+                      return res.json({ success: false, message: err.message });
+                    if (response) {
+                      res.json({
+                        success: true,
+                        message: "User Information has been updated!",
+                        data: response,
+                      });
+                    } else {
+                      res.json({
+                        success: true,
+                        message: "No User has been modified!",
+                        data: response,
+                      });
+                    }
                   }
-                }
-              );
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-          }else{
+                );
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
             let checkPassword = await bcrypt.compare(
               data.newPassword,
               docs.password
             );
-  
+
             if (!checkPassword) {
               res.json({
                 success: false,
@@ -226,6 +226,7 @@ module.exports = (router) => {
                   console.log(err);
                 });
             }
+            //
           }
 
         } else {
@@ -262,6 +263,81 @@ module.exports = (router) => {
       }
     });
   });
+
+
+  router.put("/updateProfile", (req, res) => {
+
+    let data = req.body;
+    let userData = {};
+
+    User.findOne({ id: data.id }, async (err, docs) => {
+
+      if (err) {
+        res.json({
+          success: false,
+          message: "Error unable to Find Profile: " + err,
+        });
+      } else {
+
+        let checkPassword = await bcrypt.compare(
+          data.newPassword,
+          docs.password
+        );
+
+        if (!checkPassword) {
+          res.json({
+            success: false,
+            message: "Old Password Incorrect: " + !checkPassword,
+          });
+        } else {
+          hash
+            .encryptPassword(data.newPassword)
+            .then((hash) => {
+              userData.role = data.role;
+              userData.username = data.username;
+              userData.email = data.email;
+              userData.password = hash;
+              userData.firstname = data.firstname || "";
+              userData.lastname = data.lastname || "";
+              userData.address = data.address || "";
+              changedPassword = true;
+              User.findOneAndUpdate(
+                { id: data.id },
+                userData,
+                { upsert: true },
+                (err, response) => {
+                  if (err)
+                    return res.json({ success: false, message: err.message });
+                  if (response) {
+                    res.json({
+                      success: true,
+                      message: "Your Information has been updated!",
+                      data: response,
+                    });
+                  } else {
+                    res.json({
+                      success: true,
+                      message: "No Information has been modified!",
+                      data: response,
+                    });
+                  }
+                }
+              );
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+
+
+      }
+
+    });
+
+
+  });
+
+
 
   return router;
 };
