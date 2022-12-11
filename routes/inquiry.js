@@ -130,7 +130,18 @@ module.exports = (router) => {
             }
         })
     });
-
+    router.put('/readAllinquryMessages', (req, res) => {
+        
+        Inquiry.updateMany({read: false }, {read : true }, async (err,docs) => {
+            if (err){
+                res.json({ success: false, message: 'Error mark All read documents: ' + err })
+            }
+            else{
+                res.json({ success: true, message: "All inquiry are marked read", data: docs });
+            }
+        })
+    });
+//const res = await Person.updateMany({ name: /Stark$/ }, { isDeleted: true });
 
     return router;
 };
