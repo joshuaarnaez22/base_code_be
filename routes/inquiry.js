@@ -49,6 +49,28 @@ module.exports = (router) => {
     });
 
 
+    router.get('/getAllUnreadInquiry', (req, res) =>{
+
+        Inquiry.countDocuments(
+            { read: false },
+            (err, inquiryData) => {
+              // Check if error was found or not
+              if (err) {
+                res.json({ success: false, message: err }); // Return error message
+              } else {
+                // Check if blogs were found in database
+                if (!inquiryData) {
+                    res.json({ success : true, name: 'Total Inquiry' , total: inquiryData }); // Return error of no Volunteer found
+                } else {
+                    res.json({ success : true, name: 'Total Inquiry' , total: inquiryData }); // Return success and SocialWorker array
+                }
+              }
+            }
+          ).sort({ _id: -1 });
+
+    });
+
+
     router.put('/deleteInquiry', (req, res) => {
 
         let data = req.body;
