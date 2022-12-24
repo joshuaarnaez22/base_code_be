@@ -130,6 +130,8 @@ module.exports = (router) => {
             }
         })
     });
+
+    
     router.put('/readAllinquryMessages', (req, res) => {
         
         Inquiry.updateMany({read: false }, {read : true }, async (err,docs) => {
