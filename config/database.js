@@ -15,7 +15,7 @@ const hash = crypto.createHmac('sha256', process.env.ENCRYPTION_KEY)
  
 
 module.exports = {
-//   uri: process.env.DB_LOCAL,
+  // uri: process.env.DB_LOCAL,
     uri: process.env.DB_URL,
     secret: hash,
     options: {

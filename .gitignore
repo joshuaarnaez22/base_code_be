@@ -7,3 +7,4 @@ testing against ignore
 /config
 config
 config/database.js
+config/database.js
