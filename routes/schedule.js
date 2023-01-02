@@ -41,7 +41,7 @@ module.exports = (router) => {
                 if( results.length ){
                     return res.json({ success:true, data: results  });
                 }else{
-                    return res.json({ success:false, message: "No data found!", toaster: 'off' });
+                    return res.json({ success:false, message: "No data found!", toaster: 'off', data : []  });
                 }
             }
         );
