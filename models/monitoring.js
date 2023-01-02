@@ -11,8 +11,12 @@ const monitoringSchema = new Schema({
       date :  { type: Date,  }, 
       deleted :  { type: Boolean, default : false  },
       education : { type: String,  }, 
-      daily_health : { type: String,  },
-      chores : { type: String,  }, 
+      daily_health :  { name : { type: String,  }},
+      chores : [
+
+        { name : { type: String,  }}
+
+      ], 
       action : { type: String,  },
       meal : { type: String,  }
   });
