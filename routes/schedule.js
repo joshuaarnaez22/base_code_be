@@ -39,7 +39,7 @@ module.exports = (router) => {
 
                 if( err ) return res.json({ success:false, message:err.message });
                 if( results.length ){
-                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded), date_scheduled: isot(e.schedule_date) }) )  });
+                    return res.json({ success:true, data: results  });
                 }else{
                     return res.json({ success:false, message: "No data found!", toaster: 'off' });
                 }
