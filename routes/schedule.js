@@ -39,6 +39,58 @@ module.exports = (router) => {
 
                 if( err ) return res.json({ success:false, message:err.message });
                 if( results.length ){
+                   // return res.json({ success:true, data: results  });
+                    return res.json({ success:true, data: results.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off', data : []  });
+                }
+            }
+        );
+    });
+
+
+    router.get('/getAllScheduleByID', (req, res) => {
+        
+        let id = req.body.id
+
+        Schedule.aggregate([
+        
+            {
+                $lookup:
+                    {
+                        from: "volunteers",
+                        localField: "volunteer_id",
+                        foreignField: "id",
+                        as: "volunteers"
+                    }
+            },
+            {
+                $unwind: "$volunteers"
+            },
+            {
+                $match: {
+                    "volunteers.id": id,
+                },
+            },
+            {
+                $project: {
+                    id: 1,
+                    volunteers: { $concat: [
+                        { $ifNull: [ "$volunteers.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$volunteers.lastname", "" ] }, " ",
+                       ]
+                    },
+                    schedule_date: 1,
+                    schedule: 1,
+                    status: "$status",
+                    dateAdded: 1,
+                }
+            }
+        ], (err, results) => {
+
+                if( err ) return res.json({ success:false, message:err.message });
+                if( results.length ){
                     return res.json({ success:true, data: results  });
                 }else{
                     return res.json({ success:false, message: "No data found!", toaster: 'off', data : []  });
