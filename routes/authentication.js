@@ -146,7 +146,7 @@ module.exports = (router) => {
                       success: true,
                       message: "Password is Correct",
                       token: token,
-                      user: { username: user.username },
+                      user: { username: user.username, firstname : user.firstname, lastname : user.lastname, email : user.email },
                       userToken: user.username,
                       role: user.role,
                     });
