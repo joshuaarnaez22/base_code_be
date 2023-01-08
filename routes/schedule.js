@@ -55,9 +55,9 @@ module.exports = (router) => {
     });
 
 
-    router.get('/getAllScheduleByID', (req, res) => {
+    router.post('/getAllScheduleByID', (req, res) => {
         
-        let id = req.body.id
+        let id = req.body.volunteer_id
 
         Schedule.aggregate([
         
@@ -65,7 +65,7 @@ module.exports = (router) => {
                 $lookup:
                     {
                         from: "users",
-                        localField: "id",
+                        localField: "volunteer_id",
                         foreignField: "id",
                         as: "users"
                     }
