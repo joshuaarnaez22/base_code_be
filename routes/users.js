@@ -340,7 +340,7 @@ module.exports = (router) => {
   router.get('/getAllVolunteer', (req, res) => {
 
     // Search database for all blog posts
-    Users.find({ deleted: false,  "role": "volunteer", }, { _id: 1, email: 1, username: 1, role: 1, status: 1 }, (err, user) => {
+    User.find({ deleted: false,  "role": "volunteer", }, { _id: 1, email: 1, username: 1, role: 1, status: 1 }, (err, user) => {
         // Check if error was found or not
         if (err) {
             res.json({ success: false, message: err }); // Return error message
@@ -359,7 +359,7 @@ module.exports = (router) => {
 router.get('/getTotalVolunteer', (req, res) => {
 
     // Search database for all blog posts
-    Volunteer.countDocuments({ deleted: false,  "role": "volunteer", }, (err, volunteer) => {
+    User.countDocuments({ deleted: false,  "role": "volunteer", }, (err, volunteer) => {
         // Check if error was found or not
         if (err) {
             res.json({ success: false, message: err }); // Return error message
