@@ -136,7 +136,7 @@ module.exports = (router) => {
 
                     const fullname = `${user.firstname} ${user.lastname}`
                     const token = jwt.sign(
-                      { userID: user._id, role: user.role, userId : user.id, fullname : fullname, lastname : user.lastname, email : user.email },
+                      { userID: user._id, role: user.role, userId : user.id, fullname : fullname, lastname : user.lastname,  firstname : user.firstname, username: user.username, email : user.email },
                       config.secret,
                       {
                         expiresIn: "24h",
