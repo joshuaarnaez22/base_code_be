@@ -12,21 +12,21 @@ module.exports = (router) => {
             {
                 $lookup:
                     {
-                        from: "volunteers",
-                        localField: "volunteer_id",
+                        from: "users",
+                        localField: "id",
                         foreignField: "id",
-                        as: "volunteers"
+                        as: "users"
                     }
             },
             {
-                $unwind: "$volunteers"
+                $unwind: "$users"
             },
             {
                 $project: {
                     id: 1,
                     volunteers: { $concat: [
-                        { $ifNull: [ "$volunteers.firstname", "" ] }, ", ",
-                        { $ifNull: [ "$volunteers.lastname", "" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
                        ]
                     },
                     schedule_date: 1,
@@ -59,26 +59,26 @@ module.exports = (router) => {
             {
                 $lookup:
                     {
-                        from: "volunteers",
-                        localField: "volunteer_id",
+                        from: "users",
+                        localField: "id",
                         foreignField: "id",
-                        as: "volunteers"
+                        as: "users"
                     }
             },
             {
-                $unwind: "$volunteers"
+                $unwind: "$users"
             },
             {
                 $match: {
-                    "volunteers.id": id,
+                    "users.id": id,
                 },
             },
             {
                 $project: {
                     id: 1,
                     volunteers: { $concat: [
-                        { $ifNull: [ "$volunteers.firstname", "" ] }, ", ",
-                        { $ifNull: [ "$volunteers.lastname", "" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
                        ]
                     },
                     schedule_date: 1,
