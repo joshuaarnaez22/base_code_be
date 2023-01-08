@@ -6,6 +6,8 @@ const isot = require('../config/iso-to-string').isoToString
 module.exports = (router) => {
 
     router.get('/getAllSchedule', (req, res) => {
+        console.log('getAllSchedule');
+
         
         Schedule.aggregate([
         
@@ -13,7 +15,7 @@ module.exports = (router) => {
                 $lookup:
                     {
                         from: "users",
-                        localField: "id",
+                        localField: "volunteer_id",
                         foreignField: "id",
                         as: "users"
                     }
@@ -36,6 +38,9 @@ module.exports = (router) => {
                 }
             }
         ], (err, results) => {
+
+            console.log('getAllSchedule');
+            console.log({results : results});
 
                 if( err ) return res.json({ success:false, message:err.message });
                 if( results.length ){
