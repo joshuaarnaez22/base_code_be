@@ -52,16 +52,9 @@ module.exports = (router) => {
                 }, 
                 'orphanName': {
                   '$concat': [
-                    {
-                      '$ifNull': [
-                        '$orphans.firstname', ''
-                      ]
-                    }, ', ', {
-                      '$ifNull': [
-                        '$orphans.lastname', ''
-                      ]
-                    }, ' '
-                  ]
+                    {'$ifNull': ['$orphans.firstname', '']}, ' ',
+                    { '$ifNull': ['$orphans.lastname', '']}, ' '
+                              ]
                 }, 
                 "role" : "$users.role",
                 'orphan_id': '$orphan_id', 
