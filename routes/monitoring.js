@@ -105,6 +105,10 @@ module.exports = (router) => {
 
     router.post('/addMonitoring', (req, res) => {
 
+
+        console.log('addMonitoring');
+        console.log(req.body);
+
             if(req.body.orphan_id.length){
                 let monitoring = [];
                 req.body.orphan_id.map(e => {
