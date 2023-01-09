@@ -28,8 +28,8 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     creator: { $concat: [
-                        { $ifNull: [ "$history.firstname", "no-firstname" ] }, ", ",
-                        { $ifNull: [ "$history.lastname", "no-lastname" ] }, " ",
+                        { $ifNull: [ "$history.firstname", "" ] }, " ",
+                        { $ifNull: [ "$history.lastname", "" ] }, " ",
                        ]
                     },
                     date: "$date",

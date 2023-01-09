@@ -44,13 +44,13 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     users: { $concat: [
-                        { $ifNull: [ "$users.firstname", "no-firstname" ] }, ", ",
-                        { $ifNull: [ "$users.lastname", "no-lastname" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "" ] }, " ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
                        ]
                     },
                     orphan: { $concat: [
-                        { $ifNull: [ "$orphans.firstname", "no-firstname" ] }, ", ",
-                        { $ifNull: [ "$orphans.lastname", "no-lastname" ] }, " ",
+                        { $ifNull: [ "$orphans.firstname", "" ] }, " ",
+                        { $ifNull: [ "$orphans.lastname", "" ] }, " ",
                        ]
                     },
                     user_id: "$user_id",
@@ -376,13 +376,13 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     users: { $concat: [
-                        { $ifNull: [ "$users.firstname", "no-firstname" ] }, ", ",
-                        { $ifNull: [ "$users.lastname", "no-lastname" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "" ] }, " ",
+                        { $ifNull: [ "$users.lastname", "" ] }, " ",
                        ]
                     },
                     orphan: { $concat: [
-                        { $ifNull: [ "$orphans.firstname", "no-firstname" ] }, ", ",
-                        { $ifNull: [ "$orphans.lastname", "no-lastname" ] }, " ",
+                        { $ifNull: [ "$orphans.firstname", "" ] }, " ",
+                        { $ifNull: [ "$orphans.lastname", "" ] }, " ",
                        ]
                     },
                     user_id: "$user_id",
