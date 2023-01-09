@@ -27,8 +27,8 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     volunteers: { $concat: [
-                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
-                        { $ifNull: [ "$users.lastname", "" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "no-firstname" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "no-lastname" ] }, " ",
                        ]
                     },
                     schedule_date: 1,
@@ -82,8 +82,8 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     volunteers: { $concat: [
-                        { $ifNull: [ "$users.firstname", "" ] }, ", ",
-                        { $ifNull: [ "$users.lastname", "" ] }, " ",
+                        { $ifNull: [ "$users.firstname", "no-firstname" ] }, ", ",
+                        { $ifNull: [ "$users.lastname", "no-lastname" ] }, " ",
                        ]
                     },
                     schedule_date: 1,

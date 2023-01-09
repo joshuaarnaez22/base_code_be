@@ -38,8 +38,8 @@ module.exports = (router) => {
                 $project: {
                     id: 1,
                     orphans: { $concat: [
-                        { $ifNull: [ "$firstname", "" ] }, ", ",
-                        { $ifNull: [ "$lastname", "" ] }, " ",
+                        { $ifNull: [ "$firstname", "no-firstname" ] }, ", ",
+                        { $ifNull: [ "$lastname", "no-lastname" ] }, " ",
                        ]
                     }
                 }
