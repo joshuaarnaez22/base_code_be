@@ -39,15 +39,8 @@ module.exports = (router) => {
                 'id': 1, 
                 'addedByName': {
                   '$concat': [
-                    {
-                      '$ifNull': [
-                        '$users.firstname', ''
-                      ]
-                    }, ', ', {
-                      '$ifNull': [
-                        '$users.lastname', ''
-                      ]
-                    }, ' '
+                    {'$ifNull': [ '$users.firstname', '']}, ' ', 
+                    {'$ifNull': ['$users.lastname', '']}, ' '
                   ]
                 }, 
                 'orphanName': {
