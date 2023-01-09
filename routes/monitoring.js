@@ -74,6 +74,64 @@ module.exports = (router) => {
 
 
 
+    });
+
+/*
+{
+  orphan_id : "1ac876c1-7eaf-4d4d-843c-c5150a06642a",
+  date: { $gte: ISODate("2023-01-10T00:00:00.000+00:00"), $lte: ISODate("2023-03-10T00:00:00.000+00:00") }
+}
+
+[
+  {
+    '$match': {
+      'orphan_id': '1ac876c1-7eaf-4d4d-843c-c5150a06642a', 
+      'date': {
+        '$gte': new Date('Tue, 10 Jan 2023 00:00:00 GMT'), 
+        '$lte': new Date('Fri, 10 Mar 2023 00:00:00 GMT')
+      }
+    }
+  }
+]
+
+*/
+
+
+
+    router.get('/getMonitoringRangeByID', (req, res) => {
+
+      let query = req.query;
+      let orphanID = query.orphanID;
+      let startDate = query.startDate;
+      let endDate = query.endDate;
+
+      let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ")
+      let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ") 
+   
+
+
+        Monitoring.aggregate([
+          {
+            '$match': {
+              'orphan_id': orphanID, 
+              'date': {
+                '$gte': new Date(newDate), 
+                '$lte': new Date(newEndDate)
+              }
+            }
+          }
+        ], (err, getMonitoringRangeByID) => {
+
+         
+                if( err ) return res.json({ success:false, message:err.message });
+                if( getMonitoringRangeByID.length ){
+                    return res.json({ success:true, data: getMonitoringRangeByID.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
+                }else{
+                    return res.json({ success:false, message: "No data found!", toaster: 'off' , data : [] });
+                }
+            }
+        );
+
 
 
     });
