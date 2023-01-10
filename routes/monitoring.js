@@ -98,17 +98,14 @@ module.exports = (router) => {
 
 
 
-    router.get('/getMonitoringRangeByID', (req, res) => {
+    router.post('/getMonitoringRangeByID', (req, res) => {
 
-      let query = req.query;
-      let orphanID = query.orphanID;
-      let startDate = query.startDate;
-      let endDate = query.endDate;
+      let orphanID = body.orphanID;
+      let startDate = body.startDate;
+      let endDate = body.endDate;
 
       let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ")
       let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ") 
-   
-
 
         Monitoring.aggregate([
           {
