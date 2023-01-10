@@ -100,9 +100,9 @@ module.exports = (router) => {
 
     router.post('/getMonitoringRangeByID', (req, res) => {
 
-      let orphanID = body.orphanID;
-      let startDate = body.startDate;
-      let endDate = body.endDate;
+      let orphanID = req.body.orphanID;
+      let startDate = req.body.startDate;
+      let endDate = req.body.endDate;
 
       let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ")
       let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ") 
