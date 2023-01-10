@@ -112,8 +112,8 @@ module.exports = (router) => {
             '$match': {
               'orphan_id': orphanID, 
               'date': {
-                '$gte': new Date(newDate), 
-                '$lte': new Date(newEndDate)
+                '$gte': new Date(newEndDate), 
+                '$lte': new Date(newDate)
               }
             }
           }
