@@ -104,22 +104,23 @@ module.exports = (router) => {
       let startDate = req.body.startDate;
       let endDate = req.body.endDate;
 
-      let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ")
-      let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ") 
+      let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ");
+      let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ");
+      
+      
+      
 
         Monitoring.aggregate([
           {
             '$match': {
               'orphan_id': orphanID, 
               'date': {
-                '$gte': new Date(newEndDate), 
-                '$lte': new Date(newDate)
+                '$gte': new Date(newDate), 
+                '$lte': new Date(newEndDate)
               }
             }
           }
         ], (err, getMonitoringRangeByID) => {
-
-         
                 if( err ) return res.json({ success:false, message:err.message });
                 if( getMonitoringRangeByID.length ){
                     return res.json({ success:true, data: getMonitoringRangeByID.map( e => ({ ...e, date_added : isot(e.dateAdded) }) )  });
