@@ -106,20 +106,57 @@ module.exports = (router) => {
 
       let newDate = startDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ");
       let newEndDate = endDate.substring(0, startDate.indexOf("T")).replace(/-/g, " ");
-      
-      
-      
 
-        Monitoring.aggregate([
+        Monitoring.aggregate(
+        [
           {
-            '$match': {
-              'orphan_id': orphanID, 
-              'date': {
-                '$gte': new Date(newDate), 
-                '$lte': new Date(newEndDate)
-              }
-            }
-          }
+            $lookup: {
+              from: "orphans",
+              localField: "orphan_id",
+              foreignField: "id",
+              as: "orphans",
+            },
+          },
+          {
+            $unwind: {
+              path: "$orphans",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
+            $match: {
+              orphan_id:  orphanID,
+              date: {
+                $gte: new Date(newDate), 
+                $lte: new Date(newEndDate)
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              id: 1,
+              addedby: 1,
+              orphan_id: 1,
+              status: 1,
+              date: 1,
+              deleted: 1,
+              education: 1,
+              daily_health: "$daily_health",
+              chores: "$chores",
+              action: 1,
+              meal: 1,
+        
+              orphanName: {
+                $concat: [
+                  { $ifNull: ["$orphans.firstname", ""] },
+                  " ",
+                  { $ifNull: ["$orphans.lastname", ""] },
+                  " ",
+                ],
+              },
+            },
+          },
         ], (err, getMonitoringRangeByID) => {
                 if( err ) return res.json({ success:false, message:err.message });
                 if( getMonitoringRangeByID.length ){
