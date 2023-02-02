@@ -18,7 +18,7 @@ const landingPageSchema = new Schema({
             value: {type: String}
         }
     ],
-    contact_number :  { type: Number,  },
+    contact_number :  { type: String,  },
     email :  { type: String,  },
     address :  { type: String,  },
     dateAdded :  { type: Date, default: new Date()  },

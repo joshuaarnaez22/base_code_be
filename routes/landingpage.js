@@ -7,9 +7,6 @@ module.exports = (router) => {
 
     router.post('/addlandingpage', (req, res) => {
 
-        console.log('addlandingpage');
-        console.log(req.body);
-
         let landingData = new landingPage({
             id: uuidv4(),
             information : req.body.information,
