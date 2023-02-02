@@ -8,14 +8,14 @@ const landingPageSchema = new Schema({
     services :  [
         {
             name: { type: String  },
-            value: {type: string}
+            value: {type: String} 
         }
     ],
     status :    { type: Boolean, default : true },
     trusted_agency : [
         {
             name: { type: String  },
-            value: {type: string}
+            value: {type: String}
         }
     ],
     contact_number :  { type: Number,  },
