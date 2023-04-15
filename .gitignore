@@ -1,0 +1,10 @@
+node_modules/*
+.env
+app/node_modules/*
+app
+/config/database.js
+testing against ignore
+/config
+config
+config/database.js
+config/database.js
