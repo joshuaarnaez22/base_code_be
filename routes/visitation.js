@@ -451,7 +451,6 @@ module.exports = (router) => {
         Visitation.findOneAndUpdate(
           { id: data.id },
           visitationData,
-          { upsert: true },
           (err, response) => {
             if (err) return res.json({ success: false, message: err.message });
             if (response) {
