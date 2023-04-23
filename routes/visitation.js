@@ -294,7 +294,7 @@ module.exports = (router) => {
                     visitationData.orphan_id = data.orphan_id;
                     visitationData.status = "booked";
                    
-                    Visitation.findOneAndUpdate({ id: data.id }, visitationData, { upsert: true }, (err, response) => {
+                    Visitation.findOneAndUpdate({ id: data.id }, visitationData, (err, response) => {
                         if (err) return res.json({ success: false, message: err.message });
                         if (response) {
                         
