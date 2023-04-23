@@ -143,6 +143,7 @@ module.exports = (router) => {
               .encryptPassword(data.newPassword)
               .then((hash) => {
                 userData.role = data.role;
+                userData.avatar = data.avatar || '';
                 userData.username = data.username;
                 userData.email = data.email;
                 userData.password = hash;
@@ -193,6 +194,7 @@ module.exports = (router) => {
                 .then((hash) => {
                   userData.role = data.role;
                   userData.username = data.username;
+                  userData.avatar = data.avatar || '';
                   userData.email = data.email;
                   userData.password = hash;
                   userData.firstname = data.firstname || "";
