@@ -136,7 +136,7 @@ module.exports = (router) => {
 
                     const fullname = `${user.firstname} ${user.lastname}`
                     const token = jwt.sign(
-                      { userID: user._id, role: user.role, userId : user.id, fullname : fullname, lastname : user.lastname,  firstname : user.firstname, username: user.username, email : user.email },
+                      { userID: user._id, role: user.role, userId : user.id, fullname : fullname, lastname : user.lastname,  firstname : user.firstname, username: user.username, email : user.email,avatar : user.avatar },
                       config.secret,
                       {
                         expiresIn: "24h",
@@ -146,7 +146,7 @@ module.exports = (router) => {
                       success: true,
                       message: "Password is Correct",
                       token: token,
-                      user: { username: user.username, firstname : user.firstname  },
+                      user: { username: user.username, firstname : user.firstname, avatar : user.avatar ?? 'no-photo.png'  },
                       userToken: user.username,
                       role: user.role,
                     });
