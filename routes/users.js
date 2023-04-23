@@ -42,10 +42,8 @@ module.exports = (router) => {
             id: uuidv4(),
             email: req.body.email.toLowerCase(),
             username: req.body.username.toLowerCase(),
-            firstname: req.body.firstname && req.body.firstname.toLowerCase(),
-            // firstname: req.body.firstname ? req.body.firstname.toLowerCase() : '',
-            lastname: req.body.lastname && req.body.lastname.toLowerCase(),
-            // lastname: req.body.lastname ? req.body.lastname.toLowerCase() : '',
+            firstname: req.body.firstname.toLowerCase(),
+            lastname: req.body.lastname.toLowerCase(),
             password: req.body.password,
             role: req.body.role.toLowerCase(),
           });
