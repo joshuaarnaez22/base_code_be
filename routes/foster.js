@@ -21,7 +21,7 @@ module.exports = (router) => {
                     res.json({ success: true, user: user }); // Return success and Foster array
                 }
             }
-        }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
+        }).sort({ 'dateAdded': -1 }); // Sort Foster from newest to oldest
     });
 
     router.get('/getTotalFoster', (req, res) => {
@@ -39,7 +39,7 @@ module.exports = (router) => {
                     res.json({ success : true, name: 'Fosters' , total: user  }); // Return success and Foster array
                 }
             }
-        }).sort({ '_id': -1 }); // Sort Foster from newest to oldest
+        }).sort({ 'dateAdded': -1 }); // Sort Foster from newest to oldest
     });
 
 

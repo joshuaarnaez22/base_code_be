@@ -16,7 +16,8 @@ const fosterSchema = new Schema({
     role: { type: String, required: true },
     status: { type: String, default: 'active' },
     deleted: { type: Boolean, default: false },
-    password: { type: String, required: true, validate: password.passwordValidator }
+    password: { type: String, required: true, validate: password.passwordValidator },
+    dateAdded : {  type : Date, default: new Date() }
   
   });
 

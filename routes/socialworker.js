@@ -21,7 +21,7 @@ module.exports = (router) => {
                     res.json({ success: true, user: user }); // Return success and SocialWorker array
                 }
             }
-        }).sort({ '_id': -1 }); // Sort SocialWorker from newest to oldest
+        }).sort({ 'dateAdded': -1 }); // Sort SocialWorker from newest to oldest
     });
 
     router.get('/getTotalSocialWorker', (req, res) => {
