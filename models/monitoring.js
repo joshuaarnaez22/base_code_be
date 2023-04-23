@@ -26,7 +26,8 @@ const monitoringSchema = new Schema({
 
       ], 
       action : { type: String,  },
-      meal : { type: String,  }
+      meal : { type: String,  },
+      dateAdded : {  type : Date, default: new Date() }
   });
 
   
