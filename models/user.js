@@ -9,6 +9,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
     id :  { type: String, required: true,  },
     firstname :  { type: String,  },
+    avatar :   { type:String, default: 'no-photo.png'},
     lastname :  { type: String,  },
     address :  { type: String,  },
     email: { type: String, required: true,lowercase: true, validate: email.emailValidator },
@@ -17,7 +18,8 @@ const userSchema = new Schema({
     status: { type: String, default: 'active' },
     deleted: { type: Boolean, default: false },
     password: { type: String, required: true, validate: password.passwordValidator },
-    dateAdded : { type : Date, default : new Date() }
+    dateAdded : { type : Date, default : new Date() },
+
   });
 
 
