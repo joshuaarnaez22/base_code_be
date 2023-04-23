@@ -187,7 +187,7 @@ module.exports = (router) => {
           }
         );
       }
-    }
+    } 
   });
 
   // any route that needs authorization or token should be under it if not above this middleware
