@@ -24,6 +24,7 @@ const history = require("./routes/history")(router);
 const landingPage = require("./routes/landingpage")(router);
 const inquiry = require("./routes/inquiry")(router);
 const schedule = require("./routes/schedule")(router);
+const fileupload = require("./routes/fileupload")(router);
 
 mongoose.Promise = global.Promise;
 
@@ -61,6 +62,7 @@ app.use("/history", history);
 app.use("/landingpage", landingPage);
 app.use("/inquiry", inquiry);
 app.use("/schedule", schedule);
+app.use("/fileupload", fileupload);
 
 app.get("*", (req, res) => {
   res.send("<h1>Hello from the Server Side</h1>");
