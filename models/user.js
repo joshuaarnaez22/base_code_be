@@ -9,7 +9,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
     id :  { type: String, required: true,  },
     firstname :  { type: String,  },
-    avatar :   { type:String, default: 'no-photo.png'},
+    avatar :   { type:String},
     lastname :  { type: String,  },
     address :  { type: String,  },
     email: { type: String, required: true,lowercase: true, validate: email.emailValidator },

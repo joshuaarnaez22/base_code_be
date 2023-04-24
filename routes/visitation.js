@@ -166,7 +166,7 @@ module.exports = (router) => {
           }
         }
       }
-    ).sort({ _id: -1 }); // Sort blogs from newest to oldest
+    ).sort({ 'dateAdded': 1 }); // Sort blogs from newest to oldest
   });
 
   router.get("/getTotalVisitation", (req, res) => {

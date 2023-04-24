@@ -22,7 +22,7 @@ module.exports = (router) => {
           }
         }
       }
-    ).sort({ _id: -1 }); // Sort blogs from newest to oldest
+    ).sort({ 'dateAdded': 1 }); // Sort blogs from newest to oldest
   });
   //Results.map(obj => ({ ...obj, Active: 'false' }))
 
@@ -143,7 +143,7 @@ module.exports = (router) => {
               .encryptPassword(data.newPassword)
               .then((hash) => {
                 userData.role = data.role;
-                userData.avatar = data.avatar || '';
+                userData.avatar = data.avatar;
                 userData.username = data.username;
                 userData.email = data.email;
                 userData.password = hash;
@@ -194,7 +194,7 @@ module.exports = (router) => {
                 .then((hash) => {
                   userData.role = data.role;
                   userData.username = data.username;
-                  userData.avatar = data.avatar || '';
+                  userData.avatar = data.avatar;
                   userData.email = data.email;
                   userData.password = hash;
                   userData.firstname = data.firstname || "";
@@ -233,6 +233,7 @@ module.exports = (router) => {
 
         } else {
           userData.role = data.role;
+          userData.avatar = data.avatar;
           userData.username = data.username;
           userData.firstname = data.firstname || "";
           userData.lastname = data.lastname || "";
@@ -354,7 +355,7 @@ module.exports = (router) => {
                 res.json({ success: true, user: user }); // Return success and Volunteer array
             }
         }
-    }).sort({ 'dateAdded': -1 }); // Sort Volunteer from newest to oldest
+    }).sort({ 'dateAdded': 1 }); // Sort Volunteer from newest to oldest
 });
 
 

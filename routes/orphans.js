@@ -23,7 +23,7 @@ module.exports = (router) => {
                     ) });
                 }
             }
-        }).sort({ 'dateAdded': -1 }); // Sort blogs from newest to oldest
+        }).sort({ 'dateAdded': 1 }); // Sort blogs from newest to oldest
     });
 
     router.get('/getAllActiveOrphanApi', (req, res) => {

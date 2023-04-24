@@ -21,7 +21,7 @@ module.exports = (router) => {
                     res.json({ success: true, user: user }); // Return success and Volunteer array
                 }
             }
-        }).sort({ 'dateAdded': -1 }); // Sort Volunteer from newest to oldest
+        }).sort({ 'dateAdded': 1 }); // Sort Volunteer from newest to oldest
     });
 
 
