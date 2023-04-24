@@ -8,6 +8,7 @@ const path = require("path");
 const ObjectId = mongoose.Types.ObjectId;
 let fs = require("fs");
 const { fail } = require("assert");
+const os = require("os");
 
 module.exports = (router) => {
   router.post("/addFile/:user_id", async (req, res) => {
@@ -30,7 +31,6 @@ module.exports = (router) => {
       newFileName = `${md5(newFileName.join(""))}.${file.originalFilename
         .split(".")
         .pop()}`;
-
       fs.rename(file.filepath, path.join(form.uploadDir, newFileName), () => {
         let uploadData = new File({
           id: uuidv4(),
@@ -85,7 +85,6 @@ module.exports = (router) => {
   });
 
   router.post("/addAvatar", (req, res) => {
-    console.log(req.body);
     let useFor = req.body.useFor;
     let username = "tester";
 
@@ -101,7 +100,6 @@ module.exports = (router) => {
     form.uploadDir = `${__dirname}/../images/`;
 
     form.on("file", async (field, file) => {
-      console.log(file);
       newFileName = `${md5(newFileName.join(""))}.${file.originalFilename
         .split(".")
         .pop()}`;
@@ -170,8 +168,6 @@ module.exports = (router) => {
   });
 
   router.put("/deleteFile", (req, res) => {
-    console.log(req.body);
-
     let file = req.body.link.source;
     let id = req.body.link.id;
 

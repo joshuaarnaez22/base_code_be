@@ -129,35 +129,54 @@ module.exports = (router) => {
               } else {
                 //user found compare the password
 
-                  bcrypt.compare(req.body.password, user.password).then(function(result) {
-                  if (!result) {
-                  res.json({ success: false, message: 'Password is incorrect' })
-                  } else {
+                bcrypt.compare(req.body.password, user.password).then(
+                  function (result) {
+                    if (!result) {
+                      res.json({
+                        success: false,
+                        message: "Password is incorrect",
+                      });
+                    } else {
+                      const fullname = `${user.firstname} ${user.lastname}`;
+                      console.log(user);
+                      const token = jwt.sign(
+                        {
+                          userID: user._id,
+                          role: user.role,
+                          userId: user.id,
+                          fullname: fullname,
+                          lastname: user.lastname,
+                          firstname: user.firstname,
+                          username: user.username,
+                          email: user.email,
+                          avatar: user.avatar,
+                        },
+                        config.secret,
+                        {
+                          expiresIn: "24h",
+                        }
+                      );
+                      res.json({
+                        success: true,
+                        message: "Password is Correct",
+                        token: token,
+                        user: {
+                          username: user.username,
+                          firstname: user.firstname,
+                          avatar: user.avatar ?? "",
+                        },
+                        userToken: user.username,
+                        role: user.role,
+                      });
 
-                    const fullname = `${user.firstname} ${user.lastname}`
-                    const token = jwt.sign(
-                      { userID: user._id, role: user.role, userId : user.id, fullname : fullname, lastname : user.lastname,  firstname : user.firstname, username: user.username, email : user.email,avatar : user.avatar },
-                      config.secret,
-                      {
-                        expiresIn: "24h",
-                      }
-                    );
-                    res.json({
-                      success: true,
-                      message: "Password is Correct",
-                      token: token,
-                      user: { username: user.username, firstname : user.firstname, avatar : user.avatar ?? 'no-photo.png'  },
-                      userToken: user.username,
-                      role: user.role,
-                    });
-
-                  // const token = jwt.sign({ userID: user._id,  role: user.role }, config.secret, { expiresIn: '24h' });
-                  // res.json({ success: true, message: 'Password is Correct', token: token, user: { username: user.username }, userToken: user.username, role: user.role },)
+                      // const token = jwt.sign({ userID: user._id,  role: user.role }, config.secret, { expiresIn: '24h' });
+                      // res.json({ success: true, message: 'Password is Correct', token: token, user: { username: user.username }, userToken: user.username, role: user.role },)
+                    }
+                  },
+                  function (err) {
+                    console.log(err); // Error: "It broke"
                   }
-                  }, function(err) {
-                  console.log(err); // Error: "It broke"
-                  }); 
-
+                );
 
                 // const validPassword = user.comparePassword(req.body.password);
                 // if (!validPassword) {
@@ -187,7 +206,7 @@ module.exports = (router) => {
           }
         );
       }
-    } 
+    }
   });
 
   // any route that needs authorization or token should be under it if not above this middleware

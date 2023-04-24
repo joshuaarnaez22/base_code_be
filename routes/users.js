@@ -2,27 +2,30 @@ const User = require("../models/user"); // Import User Model Schema
 const { v4: uuidv4 } = require("uuid");
 const hash = require("../config/password-hasher");
 let bcrypt = require("bcryptjs");
-const isot = require('../config/iso-to-string').isoToString
+const isot = require("../config/iso-to-string").isoToString;
 
 module.exports = (router) => {
   router.get("/getAllUser", (req, res) => {
     // Search database for all blog posts
-    User.find(
-      { deleted: false },
-      (err, user) => {
-        // Check if error was found or not
-        if (err) {
-          res.json({ success: false, message: err }); // Return error message
+    User.find({ deleted: false }, (err, user) => {
+      // Check if error was found or not
+      if (err) {
+        res.json({ success: false, message: err }); // Return error message
+      } else {
+        // Check if blogs were found in database
+        if (!user) {
+          res.json({ success: false, message: "No User found." }); // Return error of no blogs found
         } else {
-          // Check if blogs were found in database
-          if (!user) {
-            res.json({ success: false, message: "No User found." }); // Return error of no blogs found
-          } else {
-            res.json({ success: true, user: user.map(e => ({ ...e._doc, date_added: isot(e.dateAdded) })) }); // Return success and blogs array
-          }
+          res.json({
+            success: true,
+            user: user.map((e) => ({
+              ...e._doc,
+              date_added: isot(e.dateAdded),
+            })),
+          }); // Return success and blogs array
         }
       }
-    ).sort({ _id: -1 }); // Sort blogs from newest to oldest
+    }).sort({ _id: -1 }); // Sort blogs from newest to oldest
   });
   //Results.map(obj => ({ ...obj, Active: 'false' }))
 
@@ -125,6 +128,7 @@ module.exports = (router) => {
 
   router.put("/updateUser", (req, res) => {
     let data = req.body;
+    console.log({ data });
     let userData = {};
 
     User.findOne({ id: data.id }, async (err, docs) => {
@@ -138,12 +142,12 @@ module.exports = (router) => {
       } else {
         //if they change thier password
         if (data.changePassword) {
-          if (data.type === 'admin') {
+          if (data.type === "admin") {
             hash
               .encryptPassword(data.newPassword)
               .then((hash) => {
                 userData.role = data.role;
-                userData.avatar = data.avatar || '';
+                userData.avatar = data.avatar;
                 userData.username = data.username;
                 userData.email = data.email;
                 userData.password = hash;
@@ -194,7 +198,7 @@ module.exports = (router) => {
                 .then((hash) => {
                   userData.role = data.role;
                   userData.username = data.username;
-                  userData.avatar = data.avatar || '';
+                  userData.avatar = data.avatar;
                   userData.email = data.email;
                   userData.password = hash;
                   userData.firstname = data.firstname || "";
@@ -207,7 +211,10 @@ module.exports = (router) => {
                     { upsert: true },
                     (err, response) => {
                       if (err)
-                        return res.json({ success: false, message: err.message });
+                        return res.json({
+                          success: false,
+                          message: err.message,
+                        });
                       if (response) {
                         res.json({
                           success: true,
@@ -230,10 +237,10 @@ module.exports = (router) => {
             }
             //
           }
-
         } else {
           userData.role = data.role;
           userData.username = data.username;
+          userData.avatar = data.avatar;
           userData.firstname = data.firstname || "";
           userData.lastname = data.lastname || "";
           userData.address = data.address || "";
@@ -266,21 +273,17 @@ module.exports = (router) => {
     });
   });
 
-
   router.put("/updateProfile", (req, res) => {
-
     let data = req.body;
     let userData = {};
 
     User.findOne({ id: data.id }, async (err, docs) => {
-
       if (err) {
         res.json({
           success: false,
           message: "Error unable to Find Profile: " + err,
         });
       } else {
-
         let checkPassword = await bcrypt.compare(
           data.newPassword,
           docs.password
@@ -330,51 +333,50 @@ module.exports = (router) => {
               console.log(err);
             });
         }
-
-
       }
-
     });
-
-
   });
 
-  router.get('/getAllVolunteer', (req, res) => {
-
+  router.get("/getAllVolunteer", (req, res) => {
     // Search database for all blog posts
-    User.find({ deleted: false,  "role": "volunteer", }, { id: 1, email: 1, username: 1, role: 1, status: 1 }, (err, user) => {
+    User.find(
+      { deleted: false, role: "volunteer" },
+      { id: 1, email: 1, username: 1, role: 1, status: 1 },
+      (err, user) => {
         // Check if error was found or not
         if (err) {
-            res.json({ success: false, message: err }); // Return error message
+          res.json({ success: false, message: err }); // Return error message
         } else {
-            // Check if Volunteer were found in database
-            if (!user) {
-                res.json({ success: false, message: 'No Volunteer found.' }); // Return error of no Volunteer found
-            } else {
-                res.json({ success: true, user: user }); // Return success and Volunteer array
-            }
+          // Check if Volunteer were found in database
+          if (!user) {
+            res.json({ success: false, message: "No Volunteer found." }); // Return error of no Volunteer found
+          } else {
+            res.json({ success: true, user: user }); // Return success and Volunteer array
+          }
         }
-    }).sort({ 'dateAdded': -1 }); // Sort Volunteer from newest to oldest
-});
+      }
+    ).sort({ dateAdded: -1 }); // Sort Volunteer from newest to oldest
+  });
 
-
-router.get('/getTotalVolunteer', (req, res) => {
-
+  router.get("/getTotalVolunteer", (req, res) => {
     // Search database for all blog posts
-    User.countDocuments({ deleted: false,  "role": "volunteer", }, (err, volunteer) => {
+    User.countDocuments(
+      { deleted: false, role: "volunteer" },
+      (err, volunteer) => {
         // Check if error was found or not
         if (err) {
-            res.json({ success: false, message: err }); // Return error message
+          res.json({ success: false, message: err }); // Return error message
         } else {
-            // Check if SocialWorker were found in database
-            if (!volunteer) {
-                res.json({ success : true, name: 'Volunteers' , total: volunteer  }); // Return error of no Volunteer found
-            } else {
-                res.json({ success : true, name: 'Volunteers' , total: volunteer  }); // Return success and SocialWorker array
-            }
+          // Check if SocialWorker were found in database
+          if (!volunteer) {
+            res.json({ success: true, name: "Volunteers", total: volunteer }); // Return error of no Volunteer found
+          } else {
+            res.json({ success: true, name: "Volunteers", total: volunteer }); // Return success and SocialWorker array
+          }
         }
-    }); // Sort SocialWorker from newest to oldest
-});
+      }
+    ); // Sort SocialWorker from newest to oldest
+  });
 
   return router;
 };
