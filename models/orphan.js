@@ -31,6 +31,7 @@ const orphanSchema = new Schema({
     termination_rights_abandonement :  { type: String,  },
     assesement_recomendation :  { type: String,  },
     moral :  { type: String,  },
+    avatar :   { type:String},
     dateAdded : { type: Date, default : new Date() }
   });
 

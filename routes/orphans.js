@@ -115,6 +115,7 @@ module.exports = (router) => {
                 desc_present_envi :  req.body.desc_present_envi,
                 termination_rights_abandonement : req.body.termination_rights_abandonement,
                 assesement_recomendation :  req.body.assesement_recomendation,
+                avatar :  req.body.avatar,
                 // mointoring: req.body.mointoring,
             })
 
@@ -198,6 +199,7 @@ module.exports = (router) => {
                     orphanData.desc_present_envi =  req.body.desc_present_envi,
                     orphanData.termination_rights_abandonement = req.body.termination_rights_abandonement,
                     orphanData.assesement_recomendation =  req.body.assesement_recomendation,
+                    orphanData.avatar =  req.body.avatar,
 
 
                     Orphan.findOneAndUpdate({ id: data.id }, orphanData, { upsert: true }, (err, response) => {
