@@ -8,7 +8,6 @@ const path = require("path");
 const ObjectId = mongoose.Types.ObjectId;
 let fs = require("fs");
 const { fail } = require("assert");
-const os = require("os");
 
 module.exports = (router) => {
   router.post("/addFile/:user_id", async (req, res) => {
@@ -31,6 +30,7 @@ module.exports = (router) => {
       newFileName = `${md5(newFileName.join(""))}.${file.originalFilename
         .split(".")
         .pop()}`;
+
       fs.rename(file.filepath, path.join(form.uploadDir, newFileName), () => {
         let uploadData = new File({
           id: uuidv4(),
@@ -87,18 +87,100 @@ module.exports = (router) => {
   router.post("/addAvatar", (req, res) => {
     let useFor = req.body.useFor;
     let username = "tester";
-
+    let formidable = require("formidable");
     let fs = require("fs");
     let path = require("path");
     let md5 = require("md5");
 
-    const form = new formidable.IncomingForm();
+    var form = new formidable.IncomingForm();
 
     let newFileName = [username, Math.random(), Math.random(), Math.random()];
+
     let fileMime = "";
 
     form.uploadDir = `${__dirname}/../images/`;
+    form.on("file", async (field, file) => {
+      newFileName = `${md5(newFileName.join(""))}.${file.originalFilename
+        .split(".")
+        .pop()}`;
 
+      fileMime = file.mimetype.substring(0, file.mimetype.indexOf("/"));
+
+      if (fs.existsSync(file.filepath)) {
+        fs.rename(
+          file.filepath,
+          path.join(form.uploadDir, newFileName),
+          (err) => {
+            if (err) {
+              return res.json({
+                success: false,
+                message: err.name + " " + err.message,
+              });
+            }
+          }
+        );
+      } else {
+        return res.json({
+          success: false,
+          message: "Something went wrong please re-upload your image.",
+        });
+      }
+    });
+
+    form.on("error", function (err) {
+      console.log("An error has occured: \n" + err);
+    });
+    form.on("end", function () {
+      // console.log('hey');
+    });
+    //   form.parse(req);
+
+    form.parse(req, function (err, fields, files) {
+      if (err) {
+        console.error(err);
+
+        return;
+      }
+
+      let uploadData = new File({
+        id: uuidv4(),
+        source: newFileName,
+        user_id: fields.id,
+        for: "avatar",
+        filetype: fileMime,
+      });
+
+      uploadData.save((err, data) => {
+        if (err) {
+          res.json({
+            success: false,
+            message: "Error, could not save avatar : " + err,
+          });
+        } else {
+          res.json({
+            success: true,
+            message: "Avatar uploaded successfully ",
+            data: data,
+          });
+        }
+      });
+    });
+  });
+  router.post("/addOrphanAvatar", (req, res) => {
+    let useFor = "orphan";
+    let username = "tester";
+    let formidable = require("formidable");
+    let fs = require("fs");
+    let path = require("path");
+    let md5 = require("md5");
+
+    var form = new formidable.IncomingForm();
+
+    let newFileName = [username, Math.random(), Math.random(), Math.random()];
+
+    let fileMime = "";
+
+    form.uploadDir = `${__dirname}/../images/`;
     form.on("file", async (field, file) => {
       newFileName = `${md5(newFileName.join(""))}.${file.originalFilename
         .split(".")
@@ -168,6 +250,8 @@ module.exports = (router) => {
   });
 
   router.put("/deleteFile", (req, res) => {
+    console.log(req.body);
+
     let file = req.body.link.source;
     let id = req.body.link.id;
 

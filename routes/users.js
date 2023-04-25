@@ -25,7 +25,7 @@ module.exports = (router) => {
           }); // Return success and blogs array
         }
       }
-    }).sort({ _id: -1 }); // Sort blogs from newest to oldest
+    }).sort({ dateAdded: 1 }); // Sort blogs from newest to oldest
   });
   //Results.map(obj => ({ ...obj, Active: 'false' }))
 
@@ -239,6 +239,7 @@ module.exports = (router) => {
           }
         } else {
           userData.role = data.role;
+          userData.avatar = data.avatar;
           userData.username = data.username;
           userData.avatar = data.avatar;
           userData.firstname = data.firstname || "";
@@ -355,7 +356,7 @@ module.exports = (router) => {
           }
         }
       }
-    ).sort({ dateAdded: -1 }); // Sort Volunteer from newest to oldest
+    ).sort({ dateAdded: 1 }); // Sort Volunteer from newest to oldest
   });
 
   router.get("/getTotalVolunteer", (req, res) => {

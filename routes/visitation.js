@@ -136,6 +136,7 @@ module.exports = (router) => {
             date_admission: 1,
             date_surrendered: 1,
             category: 1,
+            avatar: 1,
             moral: 1,
             dateAdded: 1,
             foster: {
@@ -166,7 +167,7 @@ module.exports = (router) => {
           }
         }
       }
-    ).sort({ _id: -1 }); // Sort blogs from newest to oldest
+    ).sort({ dateAdded: -1 }); // Sort blogs from newest to oldest
   });
 
   router.get("/getTotalVisitation", (req, res) => {

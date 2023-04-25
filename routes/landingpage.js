@@ -47,7 +47,7 @@ module.exports = (router) => {
                 }
               }
             }
-          ).sort({ _id: -1 });
+          ).sort({ 'dateAdded': 1 });
 
     });
 
