@@ -379,5 +379,26 @@ module.exports = (router) => {
     ); // Sort SocialWorker from newest to oldest
   });
 
+  router.get("/getTotalFoster", (req, res) => {
+    // Search database for all blog posts
+    User.countDocuments(
+      { deleted: false, role: "foster" },
+      (err, volunteer) => {
+        console.log({ volunteer });
+        // Check if error was found or not
+        if (err) {
+          res.json({ success: false, message: err }); // Return error message
+        } else {
+          // Check if SocialWorker were found in database
+          if (!volunteer) {
+            res.json({ success: true, name: "Volunteers", total: volunteer }); // Return error of no Volunteer found
+          } else {
+            res.json({ success: true, name: "Volunteers", total: volunteer }); // Return success and SocialWorker array
+          }
+        }
+      }
+    ); // Sort SocialWorker from newest to oldest
+  });
+
   return router;
 };

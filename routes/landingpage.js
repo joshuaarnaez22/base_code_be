@@ -34,8 +34,6 @@ module.exports = (router) => {
   router.get("/getLatestLandingPage", (req, res) => {
     landingPage
       .find({ status: true }, (err, landingPageData) => {
-        console.log(landingPageData);
-        console.log(landingPageData[0]);
         // Check if error was found or not
         if (err) {
           res.json({ success: false, message: err }); // Return error message
