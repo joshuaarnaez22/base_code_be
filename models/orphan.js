@@ -8,6 +8,7 @@ const orphanSchema = new Schema({
   deleted: { type: Boolean, default: false },
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
+  education : { type: String,  }, 
   gender: { type: String },
   age: { type: Number },
   height: { type: Number },
